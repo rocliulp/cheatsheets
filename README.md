@@ -115,6 +115,10 @@ java -jar -Dspring.profiles.active=activeprofilename app.jar
 mvn clean package -e -U -X
 mvn validate
 mvn clean package -e -U -X -DskipTests
+
+mvn dependency:tree
+mvn dependency:list
+mvn dependency:analyze
 ```
 ## redis
 ```bash
