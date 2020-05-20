@@ -4,6 +4,11 @@ cheatsheets
 ## bash & linux
 ```bash
 ls -atlrhd name*tag
+
+awk '/0.5/ {print $0}' teams.txt
+awk '/0.5/ {print $1,$2}' teams.txt
+awk '/^[0-9]/ {print $1}' teams.txt
+
 # curl with user:pwd
 curl -u username:password http://example.com
 # curl upload file
@@ -148,6 +153,9 @@ redis-cli -c -p port -h host
 -- oracle date default: to_date('23-JUL-19 05.42.32.871000000 AM', 'DD-MON-RRRR HH12.MI.SS.SSSSS AM')
 
 select count(*), column1,column2 from tbname where column1=value1 and column2=value2 and column3 in (v1, v2, v3) and date1 between to_date('dstr', 'fstr') and to_date('dstr', 'fstr') group by column1, column2 having count(*) > 50 order by count(*);
+
+SELECT 1 FROM table WHERE a = 1 AND b = 2 LIMIT 1
+
 ```
 
 ## markdown
