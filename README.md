@@ -14,6 +14,20 @@ sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/n
 
 sshpass -f filepath ssh -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
+## ssh config
+```config
+Host jmp
+    Hostname host
+    User logonuser
+    IdentityFile ~/.ssh/id_rsa
+    HostKeyAlgorithms=+ssh-dss
+    ForwardAgent yes
+    LogLevel error
+    ServerAliveInterval 12
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+```
+
 
 ## docker
 ```bash
@@ -115,6 +129,7 @@ java -jar -Dspring.profiles.active=activeprofilename app.jar
 mvn clean package -e -U -X
 mvn validate
 mvn clean package -e -U -X -DskipTests
+mvn clean package -e -U -DskipTests -ff -q
 
 mvn dependency:tree
 mvn dependency:list
@@ -124,6 +139,15 @@ mvn dependency:analyze
 ```bash
 redis-server redis.conf
 redis-cli -c -p port -h host
+```
+
+## sql
+```sql
+-- mysql date:          str_to_date('2000-01-01 00:00:00', '%Y-%m-%d %T')
+-- oracle date:         to_date('2000-01-01 01:00:00', 'YYYY-MM-DD HH24:MI:SS')
+-- oracle date default: to_date('23-JUL-19 05.42.32.871000000 AM', 'DD-MON-RRRR HH12.MI.SS.SSSSS AM')
+
+select count(*), column1,column2 from tbname where column1=value1 and column2=value2 and column3 in (v1, v2, v3) and date1 between to_date('dstr', 'fstr') and to_date('dstr', 'fstr') group by column1, column2 having count(*) > 50 order by count(*);
 ```
 
 ## markdown
