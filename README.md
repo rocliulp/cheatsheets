@@ -68,6 +68,7 @@ docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myi
 docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
 docker run --rm -it --entrypoint=/bin/sh progrium/busybox
 docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6
+docker run --rm -it --entrypoint=/bin/sh  python:3.8.3-alpine3.11
 
 # docker build
 docker build -t image:tag -f Dockerfile .
@@ -156,6 +157,10 @@ select count(*), column1,column2 from tbname where column1=value1 and column2=va
 
 SELECT 1 FROM table WHERE a = 1 AND b = 2 LIMIT 1
 
+```
+
+## python
+```python
 ```
 
 ## markdown
