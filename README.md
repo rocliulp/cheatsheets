@@ -33,6 +33,7 @@ docker ps --format "table {{.ID}}\t{{.Labels}}"
 # Untaged images
 docker images --filter "dangling=true"
 docker rmi $(docker images -f "dangling=true" -q)
+docker images | grep image | awk '{ print $3 }' | xargs docker rmi -f
 docker images --filter "label=com.example.version"
 docker images --filter=reference='busy*:uclibc' --filter=reference='busy*:glibc'
 # Output format
@@ -45,6 +46,9 @@ docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -ti name bash
 # docker run
 docker run --rm --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
+docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
+docker run --rm -it --entrypoint=/bin/sh progrium/busybox
+docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6
 
 # docker build
 docker build -t image:tag -f Dockerfile .
@@ -61,6 +65,32 @@ docker-compose -f docker-compose.yaml down
 ## k8s
 https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 ```bash
+# pod
+kubectl -n ns get deployment
+kubectl -n ns exec -ti pod -- sh
+kubectl -n ns cp etc pod:/directories/
+kubectl -n ns logs -f pod
+kubectl -n ns rollout restart -f deployment.yaml
+kubectl -n ns delete pod pdname --grace-period=0 --force
+# service
+kubectl -n ns get svc
+kubectl -n ns delete service 
+
+# filter/selector/sort
+# https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/field-selectors/
+# https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/labels/
+# https://kubernetes.io/zh/docs/tasks/access-application-cluster/list-all-running-container-images/
+kubectl get services --sort-by=.metadata.name # 列出当前命名空间下所有 services，按照名称排序
+kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
+kubectl get pods -n test --sort-by=.spec.capacity.storage
+# https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/field-selectors/
+# metadata.name=my-service
+# metadata.namespace!=default
+# status.phase=Pending
+kubectl get pods --field-selector status.phase=Running
+kubectl get services  --all-namespaces --field-selector metadata.namespace!=default
+kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=Always
+kubectl get statefulsets,services --all-namespaces --field-selector metadata.namespace!=default
 ```
 
 ## git
