@@ -4,15 +4,21 @@ cheatsheets
 ## bash & linux
 ```bash
 ls -atlrhd name*tag
+mkdir -p /dir1/dir2/{dira,dirb}
+for i in {1..150}; do echo "$i"; sleep 1; done
+while true; do printf .; sleep 5;done
 
 awk '/0.5/ {print $0}' teams.txt
 awk '/0.5/ {print $1,$2}' teams.txt
 awk '/^[0-9]/ {print $1}' teams.txt
+awk '/A1/ {print $NF}' file
 
 # curl with user:pwd
 curl -u username:password http://example.com
 # curl upload file
 curl -i -X PUT -H "Content-Type: multipart/form-data" -F "apivarname=@locfilepath" -vvv http://localhost:8080/api/v1/method
+# http://host:port(8080/8081/...)/swagger-ui.html
+
 
 # ssh usage
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
@@ -111,6 +117,10 @@ kubectl get pods --field-selector status.phase=Running
 kubectl get services  --all-namespaces --field-selector metadata.namespace!=default
 kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=Always
 kubectl get statefulsets,services --all-namespaces --field-selector metadata.namespace!=default
+# Get the version label of all pods with label app=cassandra
+kubectl get pods --selector=app=cassandra -o jsonpath='{.items[*].metadata.labels.version}'
+kubectl get pod,svc --selector=app=applabelname
+kubectl get all --selector=app=applabelname
 ```
 
 ## git
