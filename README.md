@@ -72,9 +72,9 @@ docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -ti name bash
 docker run --rm --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
-docker run --rm -it --entrypoint=/bin/sh progrium/busybox
-docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6
-docker run --rm -it --entrypoint=/bin/sh  python:3.8.3-alpine3.11
+# progrium/busybox
+# alpine:3.11.6
+# python:3.8.3-alpine3.11
 
 # docker build
 docker build -t image:tag -f Dockerfile .
@@ -95,7 +95,7 @@ https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 kubectl -n ns get deployment
 kubectl -n ns exec -ti pod -- sh
 kubectl -n ns cp etc pod:/directories/
-kubectl -n ns logs -f pod
+kubectl -n ns logs --tail 100 -f pod
 kubectl -n ns rollout restart -f deployment.yaml
 kubectl -n ns delete pod pdname --grace-period=0 --force
 # service
@@ -164,9 +164,10 @@ redis-cli -c -p port -h host
 -- oracle date default: to_date('23-JUL-19 05.42.32.871000000 AM', 'DD-MON-RRRR HH12.MI.SS.SSSSS AM')
 
 select count(*), column1,column2 from tbname where column1=value1 and column2=value2 and column3 in (v1, v2, v3) and date1 between to_date('dstr', 'fstr') and to_date('dstr', 'fstr') group by column1, column2 having count(*) > 50 order by count(*);
-
+-- mysql
 SELECT 1 FROM table WHERE a = 1 AND b = 2 LIMIT 1
-
+-- oracle
+SELECT 1 FROM table WHERE a = 1 AND b = 2 and rownum < 2
 ```
 
 ## python
