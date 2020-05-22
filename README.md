@@ -100,7 +100,9 @@ kubectl -n ns rollout restart -f deployment.yaml
 kubectl -n ns delete pod pdname --grace-period=0 --force
 # service
 kubectl -n ns get svc
-kubectl -n ns delete service 
+kubectl -n ns delete service1 servic2 service3
+# deployment
+kubectl delete deployment deployment1 deployment2 deployment3
 
 # filter/selector/sort
 # https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/field-selectors/
