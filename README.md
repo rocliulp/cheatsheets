@@ -12,6 +12,9 @@ awk '/0.5/ {print $0}' teams.txt
 awk '/0.5/ {print $1,$2}' teams.txt
 awk '/^[0-9]/ {print $1}' teams.txt
 awk '/A1/ {print $NF}' file
+uuidgen
+cmd1 && cmd2 && cmd3
+cmd1 || cmd2 || cmd3
 
 # curl with user:pwd
 curl -u username:password http://example.com
@@ -83,6 +86,7 @@ docker build -t image:tag -f Dockerfile .
 docker save image:tag -o image-tag.tgz
 
 # docker-compose
+docker-compose -f docker-compose.yaml build
 docker-compose -f docker-compose.yaml up -d 
 docker-compose -f docker-compose.yaml down
 
