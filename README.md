@@ -101,6 +101,13 @@ kubectl -n ns exec -ti pod -- sh
 kubectl -n ns cp etc pod:/directories/
 kubectl -n ns logs --tail 100 -f pod
 kubectl -n ns rollout restart -f deployment.yaml
+kubectl rollout restart deployment mydeploy
+# You can set some environment variable which will force your deployment pods to restart:
+kubectl set env deployment mydeploy DEPLOY_DATE="$(date)"
+## {
+kubectl scale deployment mydeploy --replicas=0
+kubectl scale deployment mydeploy --replicas=1
+## }
 kubectl -n ns delete pod pdname --grace-period=0 --force
 # service
 kubectl -n ns get svc
@@ -178,6 +185,15 @@ SELECT 1 FROM table WHERE a = 1 AND b = 2 and rownum < 2
 
 ## python
 ```python
+```
+
+## prometheus
+```prometheus
+# metric console query 
+metric_name{label="value"}[15m] offset 5m
+sum(metrics_name{label1="value1", label2="value2"})
+sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
+sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
 ```
 
 ## markdown
