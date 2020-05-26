@@ -81,6 +81,8 @@ docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
 
 # docker build
 docker build -t image:tag -f Dockerfile .
+docker build -t docker-register-FQDN.com/repo/image-name:tag .
+docker push docker-register-FQDN.com/repo/image-name:tag
 
 # docker save
 docker save image:tag -o image-tag.tgz
@@ -148,6 +150,13 @@ git clone https://github.com/acct/url.git
 git add ./yourfiles
 git commit -m "msg"
 git push
+
+# get latest code regardless local changes
+# rm -rf .
+git reset --hard HEAD
+git clean -xffd
+git pull
+
 ```
 ## springboot
 ```bash
