@@ -78,12 +78,22 @@ docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
 # progrium/busybox
 # alpine:3.11.6
 # python:3.8.3-alpine3.11
+# joffotron/docker-net-tools
+# nicolaka/netshoot
+# raesene/alpine-nettools
+# praqma/network-multitool
+# amouat/network-utils
+# pstauffer/curl
+# byrnedo/alpine-curl 
+docker inspect container
 
 # docker build
 docker build -t image:tag -f Dockerfile .
 docker build -t docker-register-FQDN.com/repo/image-name:tag .
 docker push docker-register-FQDN.com/repo/image-name:tag
-
+docker tag docker-register-FQDN.com/repo/image-name:oldtag docker-register-FQDN.com/repo/image-name:newtag
+# untag. image id does not work here.
+docker rmi docker-register-FQDN.com/repo/image-name:oldtag
 # docker save
 docker save image:tag -o image-tag.tgz
 
