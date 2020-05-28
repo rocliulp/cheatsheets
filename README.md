@@ -28,7 +28,21 @@ sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/n
 
 sshpass -f filepath ssh -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
-## ssh config
+### bash cursor movement
+Move by |   Forward |   Backward
+--------|-----------|-----------
+word    |   M-f     |   M-b
+line    |   C-e     |   C-a
+switch line/current |   C-x C-x |   C-x C-x
+### bash delete characters
+del by  |   End/Forward |   Begin/Backward
+--------|---------------|------------
+word    |               |   M-Backspace
+char    |   C-d         |   Backspace
+space   |               |   C-w
+line    |   C-u         |   C-k
+
+### ssh config
 ```config
 Host jmp
     Hostname host
@@ -41,7 +55,6 @@ Host jmp
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 ```
-
 
 ## docker
 ```bash
@@ -218,14 +231,13 @@ sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
 sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
 ```
 ## emacs
-### Emacs point (cursor) movement
+### Emacs cursor movement
 Move by     |   Forward |   Backward
 ------------|-----------|-----------
 character   |   C-f     |   C-b
 word        |   M-f     |   M-b
 line        |   C-n     |   C-p
 screen      |   C-v     |   M-v
-
 
 Move to     |   Beginning of    |   End of
 ------------|-------------------|-----------
@@ -234,13 +246,13 @@ sentence    |   M-a             |   M-e
 paragraph   |   M-{             |   M-}
 buffer      |   M-<             |   M->
 
-Notice also that the commands are somewhat mnemonic:
-* “f” stands for “forward”
-* “b” stands for “backward”
-* “n” stands for “next”
-* “p” stands for “previous”
-* “a” stands for “beginning” (like the beginning of the alphabet)
-* “e” stands for “end”
+Notice that the commands are somewhat mnemonic:
+* "f" stands for "forward"
+* "b" stands for "backward"
+* "n" stands for "next"
+* "p" stands for "previous"
+* "a" stands for "beginning" (like the beginning of the alphabet)
+* "e" stands for "end"
 
 ## markdown
 https://guides.github.com/features/mastering-markdown/
