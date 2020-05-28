@@ -220,15 +220,15 @@ sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",l
 ## emacs
 ### Emacs point (cursor) movement
 Move by     |   Forward |   Backward
-------------------------------------
+------------|-----------|-----------
 character   |   C-f     |   C-b
 word        |   M-f     |   M-b
 line        |   C-n     |   C-p
 screen      |   C-v     |   M-v
 
 
-Move to     |   Beginning of  |   End of
-------------------------------------------
+Move to     |   Beginning of    |   End of
+------------|-------------------|-----------
 line        |   C-a             |   C-e
 sentence    |   M-a             |   M-e
 paragraph   |   M-{             |   M-}
