@@ -28,20 +28,6 @@ sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/n
 
 sshpass -f filepath ssh -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
-### bash cursor movement
-Move by |   Forward |   Backward
---------|-----------|-----------
-word    |   M-f     |   M-b
-line    |   C-e     |   C-a
-switch line/current |   C-x C-x |   C-x C-x
-### bash delete characters
-del by  |   End/Forward |   Begin/Backward
---------|---------------|------------
-word    |               |   M-Backspace
-char    |   C-d         |   Backspace
-space   |               |   C-w
-line    |   C-u         |   C-k
-
 ### ssh config
 ```config
 Host jmp
@@ -55,6 +41,19 @@ Host jmp
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 ```
+### cursor movement
+Move by |   Forward |   Backward
+--------|-----------|-----------
+word    |   M-f     |   M-b
+line    |   C-e     |   C-a
+switch line/current |   C-x C-x |   C-x C-x
+### delete characters
+del by  |   End/Forward |   Begin/Backward
+--------|---------------|------------
+word    |               |   M-Backspace
+char    |   C-d         |   Backspace
+space   |               |   C-w
+line    |   C-u         |   C-k
 
 ## docker
 ```bash
@@ -231,7 +230,7 @@ sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
 sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
 ```
 ## emacs
-### Emacs cursor movement
+### cursor movement
 Move by     |   Forward |   Backward
 ------------|-----------|-----------
 character   |   C-f     |   C-b
