@@ -253,5 +253,16 @@ Notice that the commands are somewhat mnemonic:
 * "a" stands for "beginning" (like the beginning of the alphabet)
 * "e" stands for "end"
 
+## sqlplus
+```bash
+echo '127.0.0.1 ${HOSTNAME}' >> /etc/hosts # For sql on Mac sometimes
+rlwrap sqlplus usr/pwd@//host:port/dbins
+rlwrap sqlplus usr/pwd@//localhost:port/dbins
+```
+## vim
+```vim
+" vim on Mac Terminal, change encoding for Chinese:
+:e ++enc=gb2312 filename
+```
 ## markdown
 https://guides.github.com/features/mastering-markdown/
