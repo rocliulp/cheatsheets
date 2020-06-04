@@ -21,7 +21,8 @@ curl -u username:password http://example.com
 # curl upload file
 curl -i -X PUT -H "Content-Type: multipart/form-data" -F "apivarname=@locfilepath" -vvv http://localhost:8080/api/v1/method
 # http://host:port(8080/8081/...)/swagger-ui.html
-
+# curl output and pipe redirect
+curl -X PUT http://localhost:8080/api/v1/method -o std.out > out.std 2>&1 &
 
 # ssh usage
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
