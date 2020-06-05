@@ -279,7 +279,7 @@ rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ## mysql
 https://gist.github.com/hofmannsven/9164408
 ```bash
-# mycli
+# mycli - https://hub.docker.com/r/diyan/mycli
 docker run --rm diyan/mycli --help
 docker run -d --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:5.7
 docker run --rm -ti --name=mycli --link=mysql:mysql diyan/mycli --host=mysql --database=mysql --user=root --password=secret
