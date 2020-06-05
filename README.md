@@ -213,12 +213,22 @@ redis-cli -c -p port -h host
 
 select count(*), column1,column2 from tbname where column1=value1 and column2=value2 and column3 in (v1, v2, v3) and date1 between to_date('dstr', 'fstr') and to_date('dstr', 'fstr') group by column1, column2 having count(*) > 50 order by count(*);
 -- mysql
-SELECT 1 FROM table WHERE a = 1 AND b = 2 LIMIT 1
+SELECT 1 FROM table WHERE a = 1 AND b = 2 LIMIT 1;
 -- oracle
-SELECT 1 FROM table WHERE a = 1 AND b = 2 and rownum < 2
+SELECT 1 FROM table WHERE a = 1 AND b = 2 and rownum < 2;
+
+SELECT * from mytable WHERE mycolumn = myvalue AND ROWNUM < 100;
+-- oracle topk
+select * from (select * from my_view where alert_level=3 order by alert_time desc) where rownum<=10;-- performance issues if many records
+SELECT column1, column2 FROM (SELECT column1, column2, ROW_NUMBER() OVER (ORDER BY column1) RNK FROM mytable WHERE column1 >= 10000 AND column2 = myvalue) WHERE RNK < 100000 ORDER BY column1;
+select  column1, column2 from mytable order by column1 asc fetch first 10000 rows only; -- need 12c and later
 ```
 
 ## python
+```bash
+docker run -it --rm -it --entrypoint=/bin/sh --name py3alpine python:3.8.3-alpine3.11
+docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
+```
 ```python
 ```
 
@@ -264,6 +274,15 @@ rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ```vim
 " vim on Mac Terminal, change encoding for Chinese:
 :e ++enc=gb2312 filename
+```
+
+## mysql
+https://gist.github.com/hofmannsven/9164408
+```bash
+# mycli
+docker run --rm diyan/mycli --help
+docker run -d --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:5.7
+docker run --rm -ti --name=mycli --link=mysql:mysql diyan/mycli --host=mysql --database=mysql --user=root --password=secret
 ```
 ## markdown
 https://guides.github.com/features/mastering-markdown/
