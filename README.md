@@ -183,6 +183,13 @@ git reset --hard HEAD
 git clean -xffd
 git pull
 
+# branch
+git branch -a # list all branches
+git branch bname # create a new branch
+git checkout bname # switch to another branch
+git checkout -b bname # create & switch to a new branch
+
+git status
 ```
 ## springboot
 ```bash
