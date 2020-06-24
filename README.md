@@ -126,7 +126,11 @@ https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 # pod
 kubectl -n ns get deployment
 kubectl -n ns exec -ti pod -- sh
-kubectl -n ns cp etc pod:/directories/
+kubectl -n ns cp etc pod:directories/etc # root directory does not need '/' to avoid error: tar: removing leading '/' from member names
+kubectl -n ns cp pod:directories/etc etc # root directory does not need '/' to avoid error: tar: removing leading '/' from member names
+kubectl cp ns/pod:root-dir/dir/file local-dir # Did not verify that yet.
+# There might be articles showing cp files/dirs from a pod to another but so far I did not see any success when running that.
+
 kubectl -n ns logs --tail 100 -f pod
 kubectl -n ns rollout restart -f deployment.yaml
 kubectl rollout restart deployment mydeploy
