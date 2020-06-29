@@ -16,6 +16,9 @@ uuidgen
 cmd1 && cmd2 && cmd3
 cmd1 || cmd2 || cmd3
 
+echo "aaabbbccc" | base64
+echo "YWFhYmJiY2NjCg==" | base64 --decode
+
 # curl with user:pwd
 curl -u username:password http://example.com
 # curl upload file
@@ -146,7 +149,13 @@ kubectl -n ns get svc
 kubectl -n ns delete service1 servic2 service3
 # deployment
 kubectl delete deployment deployment1 deployment2 deployment3
-
+# configmap
+kubectl get configmap -n ns
+# secret
+kubectl create secret generic my-secret -n ns --from-file=PASSPHRASE=PASSPHRASE.txt --from-file=MY_PRIVATE_KEY=MY_PRIVATE_KEY.txt
+kubectl create secret generic my-secret -n ns --from-literal=ADMIN_USER_NAME=admin --from-file=ADMIN_USER_TOKEN=ADMIN_USER_ACCESS_TOKEN.txt
+kubectl get secret -n ns
+kubectl describe secret my-secret -n ns
 # filter/selector/sort
 # https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/field-selectors/
 # https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/labels/
@@ -209,6 +218,9 @@ mvn clean package -e -U -DskipTests -ff -q
 mvn dependency:tree
 mvn dependency:list
 mvn dependency:analyze
+```
+## gradle
+```
 ```
 ## redis
 ```bash
