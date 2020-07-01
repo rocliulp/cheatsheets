@@ -27,10 +27,19 @@ curl -i -X PUT -H "Content-Type: multipart/form-data" -F "apivarname=@locfilepat
 # curl output and pipe redirect
 curl -X PUT http://localhost:8080/api/v1/method -o std.out > out.std 2>&1 &
 
+# Install package from source without root/sudo
+wget http://sourceforge.net/projects/sshpass/files/latest/download -O sshpass.tar.gz
+tar -xvf sshpass.tar.gz
+cd sshpass-1.06/
+./configure --help
+./configure --prefix='/home/dir/user/sshpass/bin'
+make
+make install
+
 # ssh usage
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
 
-sshpass -f filepath ssh -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
+sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
 ### ssh config
 ```config
@@ -77,7 +86,7 @@ docker ps --format "table {{.ID}}\t{{.Labels}}"
 # Untaged images
 docker images --filter "dangling=true"
 docker rmi $(docker images -f "dangling=true" -q)
-docker images | grep image | awk '{ print $3 }' | xargs docker rmi -f
+docker images | grep image | awk '{ print $3 }' | xargs --no-run-if-empty docker rmi -f
 docker images --filter "label=com.example.version"
 docker images --filter=reference='busy*:uclibc' --filter=reference='busy*:glibc'
 # Output format
@@ -175,6 +184,15 @@ kubectl get statefulsets,services --all-namespaces --field-selector metadata.nam
 kubectl get pods --selector=app=cassandra -o jsonpath='{.items[*].metadata.labels.version}'
 kubectl get pod,svc --selector=app=applabelname
 kubectl get all --selector=app=applabelname
+# pod&svc&run&mariadb&mysql
+# https://kubernetes.io/zh/docs/tasks/run-application/run-single-instance-stateful-application/
+# https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
+kubectl run -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h svcname.namespace.svc.cluster.local -u root -ppasswd
+https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
+# secret
+# https://opensource.com/article/19/6/introduction-kubernetes-secrets-and-configmaps
+kubectl get secret mariadb-root-password -o jsonpath='{.data.password}'
+kubectl get secret mariadb-root-password -o jsonpath='{.data.password}' | base64 --decode -
 ```
 
 ## git
@@ -245,6 +263,14 @@ SELECT * from mytable WHERE mycolumn = myvalue AND ROWNUM < 100;
 select * from (select * from my_view where alert_level=3 order by alert_time desc) where rownum<=10;-- performance issues if many records
 SELECT column1, column2 FROM (SELECT column1, column2, ROW_NUMBER() OVER (ORDER BY column1) RNK FROM mytable WHERE column1 >= 10000 AND column2 = myvalue) WHERE RNK < 100000 ORDER BY column1;
 select  column1, column2 from mytable order by column1 asc fetch first 10000 rows only; -- need 12c and later
+
+--mysql, query size/record counts of each database/schema
+-- https://www.a2hosting.com/kb/developer-corner/mysql/determining-the-size-of-mysql-databases-and-tables
+SELECT table_schema AS "Database", ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)" FROM information_schema.TABLES GROUP BY table_schema;
+SELECT table_name AS "Table", ROUND(((data_length + index_length) / 1024 / 1024), 2) AS "Size (MB)" FROM information_schema.TABLES WHERE table_schema = "database_name" ORDER BY (data_length + index_length) DESC;
+-- https://stackoverflow.com/questions/286039/get-record-counts-for-all-tables-in-mysql-database
+SELECT TABLE_NAME,SUM(TABLE_ROWS) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'your_db' GROUP BY TABLE_NAME;
+SELECT table_schema 'Database', SUM(data_length + index_length) AS 'DBSize', SUM(TABLE_ROWS) AS DBRows, SUM(AUTO_INCREMENT) AS DBAutoIncCount FROM information_schema.tables GROUP BY table_schema;
 ```
 
 ## python
