@@ -3,6 +3,7 @@ cheatsheets
 
 ## bash & linux
 ```bash
+bash -c "ls -atlrh /tmp"
 ls -atlrhd name*tag
 mkdir -p /dir1/dir2/{dira,dirb}
 for i in {1..150}; do echo "$i"; sleep 1; done
@@ -18,6 +19,8 @@ cmd1 || cmd2 || cmd3
 
 echo "aaabbbccc" | base64
 echo "YWFhYmJiY2NjCg==" | base64 --decode
+
+nohup myprogram </dev/null >myprogram.log 2>&1 &
 
 # curl with user:pwd
 curl -u username:password http://example.com
@@ -135,6 +138,9 @@ curl -u usr:pwd -X GET https://docker-register.fqdn.com/v2/repo/img/tags/list
 ## k8s
 https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 ```bash
+# https://medium.com/faun/kubectl-commands-cheatsheet-43ce8f13adfb
+# explain to check the yaml filelds usage 
+kubectl explain svc
 # pod
 kubectl -n ns get deployment
 kubectl -n ns exec -ti pod -- sh
@@ -184,6 +190,9 @@ kubectl get statefulsets,services --all-namespaces --field-selector metadata.nam
 kubectl get pods --selector=app=cassandra -o jsonpath='{.items[*].metadata.labels.version}'
 kubectl get pod,svc --selector=app=applabelname
 kubectl get all --selector=app=applabelname
+# https://blog.mayadata.io/openebs/kubernetes-label-selector-and-field-selector
+kubectl get pod --field-selector metadata.name=redis-aaabbbccc-w895j -n ns # need full name. Cannot regex
+kubectl get pod --field-selector spec.name=label-example
 # pod&svc&run&mariadb&mysql
 # https://kubernetes.io/zh/docs/tasks/run-application/run-single-instance-stateful-application/
 # https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
@@ -244,6 +253,14 @@ mvn dependency:analyze
 ```bash
 redis-server redis.conf
 redis-cli -c -p port -h host
+
+# scan
+scan 0
+scan 17
+sscan myset 0 match f*
+scan 176 MATCH *11* COUNT 1000
+SCAN 0 TYPE zset
+hscan hash 0
 ```
 
 ## sql
@@ -337,7 +354,7 @@ docker run --rm -it --name mycli -e MYSQL_DATABASE=dbname -e MYSQL_HOST=dbhost -
 
 docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbname -v /data/dbname:/var/lib/mysql -p 3306:3306 --restart=on-failure -d mariadb:10.3
 docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
-
+docker exec -it adpdb mysql -N -B --raw -u adpuser -padppass adpdb -e "SELECT * FROM mytable;"
 ```
 ## markdown
 https://guides.github.com/features/mastering-markdown/
