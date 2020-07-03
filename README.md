@@ -1,7 +1,7 @@
 # cheatsheets
 cheatsheets
 
-## bash & linux
+# bash & linux
 ```bash
 bash -c "ls -atlrh /tmp"
 ls -atlrhd name*tag
@@ -44,7 +44,7 @@ sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/n
 
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
-### ssh config
+## ssh config
 ```config
 Host jmp
     Hostname host
@@ -57,13 +57,13 @@ Host jmp
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 ```
-### cursor movement
+## cursor movement
 Move by |   Forward |   Backward
 --------|-----------|-----------
 word    |   M-f     |   M-b
 line    |   C-e     |   C-a
 switch line/current |   C-x C-x |   C-x C-x
-### delete characters
+## delete characters
 del by  |   End/Forward |   Begin/Backward
 --------|---------------|------------
 word    |               |   M-Backspace
@@ -71,7 +71,7 @@ char    |   C-d         |   Backspace
 space   |               |   C-w
 line    |   C-u         |   C-k
 
-## docker
+# docker
 ```bash
 # docker ps
 # https://docs.docker.com/engine/reference/commandline/ps/
@@ -135,7 +135,7 @@ curl -u usr:pwd -X GET https://docker-register.fqdn.com/v2/repo/_catalog
 curl -u usr:pwd -X GET https://docker-register.fqdn.com/v2/repo/img/tags/list
 ```
 
-## k8s
+# k8s
 https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 ```bash
 # https://medium.com/faun/kubectl-commands-cheatsheet-43ce8f13adfb
@@ -193,18 +193,22 @@ kubectl get all --selector=app=applabelname
 # https://blog.mayadata.io/openebs/kubernetes-label-selector-and-field-selector
 kubectl get pod --field-selector metadata.name=redis-aaabbbccc-w895j -n ns # need full name. Cannot regex
 kubectl get pod --field-selector spec.name=label-example
-# pod&svc&run&mariadb&mysql
+# pod&svc&run&mariadb&mysql&network diagnostics
 # https://kubernetes.io/zh/docs/tasks/run-application/run-single-instance-stateful-application/
 # https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
 kubectl run -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h svcname.namespace.svc.cluster.local -u root -ppasswd
-https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
+kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl
+kubectl -n ns run --rm --image=radial/busyboxplus:curl --restart=Never curl -- curl url
+kubectl -n ns exec  podcontainer -- mysqldump --all-databases --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
+kubectl -n ns exec  podcontainer -- mysqldump --databases db1 db2 db3 db4 --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
+nohup kubectl -n ns exec podcontainer -- mysql -uroot -ppasswd -e "source /tmp/dump-file.sql;" &
 # secret
 # https://opensource.com/article/19/6/introduction-kubernetes-secrets-and-configmaps
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}'
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}' | base64 --decode -
 ```
 
-## git
+# git
 ```bash
 git config --global user.name "name"
 
@@ -231,11 +235,11 @@ git checkout -b bname # create & switch to a new branch
 
 git status
 ```
-## springboot
+# springboot
 ```bash
 java -jar -Dspring.profiles.active=activeprofilename app.jar
 ```
-## maven
+# maven
 ```bash
 mvn clean package -e -U -X
 mvn validate
@@ -246,10 +250,10 @@ mvn dependency:tree
 mvn dependency:list
 mvn dependency:analyze
 ```
-## gradle
+# gradle
 ```
 ```
-## redis
+# redis
 ```bash
 redis-server redis.conf
 redis-cli -c -p port -h host
@@ -263,7 +267,7 @@ SCAN 0 TYPE zset
 hscan hash 0
 ```
 
-## sql
+# sql
 ```sql
 -- mysql date:          str_to_date('2000-01-01 00:00:00', '%Y-%m-%d %T')
 -- oracle date:         to_date('2000-01-01 01:00:00', 'YYYY-MM-DD HH24:MI:SS')
@@ -290,7 +294,7 @@ SELECT TABLE_NAME,SUM(TABLE_ROWS) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCH
 SELECT table_schema 'Database', SUM(data_length + index_length) AS 'DBSize', SUM(TABLE_ROWS) AS DBRows, SUM(AUTO_INCREMENT) AS DBAutoIncCount FROM information_schema.tables GROUP BY table_schema;
 ```
 
-## python
+# python
 ```bash
 docker run -it --rm -it --entrypoint=/bin/sh --name py3alpine python:3.8.3-alpine3.11
 docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
@@ -298,7 +302,7 @@ docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
 ```python
 ```
 
-## prometheus
+# prometheus
 ```prometheus
 # metric console query 
 metric_name{label="value"}[15m] offset 5m
@@ -306,8 +310,8 @@ sum(metrics_name{label1="value1", label2="value2"})
 sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
 sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
 ```
-## emacs
-### cursor movement
+# emacs
+## cursor movement
 Move by     |   Forward |   Backward
 ------------|-----------|-----------
 character   |   C-f     |   C-b
@@ -330,19 +334,19 @@ Notice that the commands are somewhat mnemonic:
 * "a" stands for "beginning" (like the beginning of the alphabet)
 * "e" stands for "end"
 
-## sqlplus
+# sqlplus
 ```bash
 echo '127.0.0.1 ${HOSTNAME}' >> /etc/hosts # For sql on Mac sometimes
 rlwrap sqlplus usr/pwd@//host:port/dbins
 rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ```
-## vim
+# vim
 ```vim
 " vim on Mac Terminal, change encoding for Chinese:
 :e ++enc=gb2312 filename
 ```
 
-## mysql
+# mysql
 https://gist.github.com/hofmannsven/9164408
 ```bash
 # mycli - https://hub.docker.com/r/diyan/mycli
@@ -356,5 +360,16 @@ docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_P
 docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
 docker exec -it adpdb mysql -N -B --raw -u adpuser -padppass adpdb -e "SELECT * FROM mytable;"
 ```
-## markdown
+
+# tmux
+https://tmuxcheatsheet.com/
+Shortcuts                                   | decription
+--------------------------------------------|---------------------------
+Ctrl+b - "                                  | split a pane horizontally
+Ctrl+b - %                                  | split a pane vertically 
+Ctrl+b - z                                  | zoom/unzoom current pane 
+Ctrl+b - Arrow keys (Left, Right, Up, Down) | witch between panes 
+https://github.com/gpakosz/.tmux
+
+# markdown
 https://guides.github.com/features/mastering-markdown/
