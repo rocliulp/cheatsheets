@@ -199,6 +199,7 @@ kubectl get pod --field-selector spec.name=label-example
 kubectl run -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h svcname.namespace.svc.cluster.local -u root -ppasswd
 kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl
 kubectl -n ns run --rm --image=radial/busyboxplus:curl --restart=Never curl -- curl url
+kubectl -n ns run --rm -it --image=busybox --restart=Never mybusybox -- sh
 kubectl -n ns exec  podcontainer -- mysqldump --all-databases --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
 kubectl -n ns exec  podcontainer -- mysqldump --databases db1 db2 db3 db4 --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
 nohup kubectl -n ns exec podcontainer -- mysql -uroot -ppasswd -e "source /tmp/dump-file.sql;" &
@@ -358,7 +359,7 @@ docker run --rm -it --name mycli -e MYSQL_DATABASE=dbname -e MYSQL_HOST=dbhost -
 
 docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbname -v /data/dbname:/var/lib/mysql -p 3306:3306 --restart=on-failure -d mariadb:10.3
 docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
-docker exec -it adpdb mysql -N -B --raw -u adpuser -padppass adpdb -e "SELECT * FROM mytable;"
+docker exec -it dbcontainer mysql -N -B --raw -u dbuser -pdbpass db -e "SELECT * FROM mytable;"
 ```
 
 # tmux
