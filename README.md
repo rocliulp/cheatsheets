@@ -4,6 +4,7 @@ cheatsheets
 # bash & linux
 ```bash
 bash -c "ls -atlrh /tmp"
+readlink -f file.txt # show full path of a file
 ls -atlrhd name*tag
 mkdir -p /dir1/dir2/{dira,dirb}
 for i in {1..150}; do echo "$i"; sleep 1; done
@@ -39,7 +40,8 @@ cd sshpass-1.06/
 make
 make install
 
-# ssh usage
+# ssh&scp usage
+scp -o "ForwardAgent=yes" -i id_rsa -F config -oProxyJump=jmp user@host:/tmp/file locfile
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
 
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
@@ -253,6 +255,7 @@ mvn dependency:analyze
 ```
 # gradle
 ```
+
 ```
 # redis
 ```bash
@@ -301,6 +304,7 @@ docker run -it --rm -it --entrypoint=/bin/sh --name py3alpine python:3.8.3-alpin
 docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
 ```
 ```python
+
 ```
 
 # prometheus
