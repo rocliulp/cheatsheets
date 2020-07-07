@@ -59,7 +59,21 @@ Host jmp
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 ```
+## DNS
+```bash
+# https://www.hostinger.com/tutorials/how-to-use-the-dig-command-in-linux/
+dig +answer +short hostname.corp.com
+dig +answer +short -x ip.ip.ip.ip
+dig hostinger.com +trace
+https://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/
+dig Hostname
+dig DomaiNameHere
+dig @DNS-server-name Hostname
+dig @DNS-server-name IPAddress
+dig @DNS-server-name Hostname|IPAddress type
+```
 ## cursor movement
+
 Move by |   Forward |   Backward
 --------|-----------|-----------
 word    |   M-f     |   M-b
@@ -75,6 +89,8 @@ line    |   C-u         |   C-k
 
 # docker
 ```bash
+pkill -9 containerd-shim
+
 # docker ps
 # https://docs.docker.com/engine/reference/commandline/ps/
 docker ps --filter "label=color=blue"
@@ -296,6 +312,21 @@ SELECT table_name AS "Table", ROUND(((data_length + index_length) / 1024 / 1024)
 -- https://stackoverflow.com/questions/286039/get-record-counts-for-all-tables-in-mysql-database
 SELECT TABLE_NAME,SUM(TABLE_ROWS) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'your_db' GROUP BY TABLE_NAME;
 SELECT table_schema 'Database', SUM(data_length + index_length) AS 'DBSize', SUM(TABLE_ROWS) AS DBRows, SUM(AUTO_INCREMENT) AS DBAutoIncCount FROM information_schema.tables GROUP BY table_schema;
+
+--mysql
+DROP DATABASE IF EXISTS db;
+CREATE DATABASE db DEFAULT CHARACTER SET utf8;
+CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'pass';
+CREATE USER IF NOT EXISTS 'user'@'localhost' IDENTIFIED BY 'pass';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
+FLUSH PRIVILEGES;
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'%', 'user'@'localhost';
+FLUSH PRIVILEGES;
+
+DROP USER IF EXISTS 'user'@'%';
+DROP USER IF EXISTS 'user'@'localhost';
 ```
 
 # python
@@ -374,7 +405,13 @@ Ctrl+b - "                                  | split a pane horizontally
 Ctrl+b - %                                  | split a pane vertically 
 Ctrl+b - z                                  | zoom/unzoom current pane 
 Ctrl+b - Arrow keys (Left, Right, Up, Down) | witch between panes 
+Ctrl+b - [ | use your normal navigation keys(Up, PgDn) to scroll around then 'q' to quit to normal
+Ctrl+b - PgUp | go directly into copy mode and scroll one page up
+set -g mouse on        | #For tmux version 2.1 and up
+set -g mode-mouse on  |  #For tmux versions < 2.1
+tmux -u | UTF-8
 https://github.com/gpakosz/.tmux
-
+http://louiszhai.github.io/2017/09/30/tmux/
+https://readthedocs.org/projects/tao-of-tmux-chinese/downloads/pdf/latest/
 # markdown
 https://guides.github.com/features/mastering-markdown/
