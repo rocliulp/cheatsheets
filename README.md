@@ -225,6 +225,8 @@ nohup kubectl -n ns exec podcontainer -- mysql -uroot -ppasswd -e "source /tmp/d
 # https://opensource.com/article/19/6/introduction-kubernetes-secrets-and-configmaps
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}'
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}' | base64 --decode -
+# node
+kubectl get nodes -l "nodetype=mylabel"
 ```
 
 # git
@@ -251,6 +253,7 @@ git branch -a # list all branches
 git branch bname # create a new branch
 git checkout bname # switch to another branch
 git checkout -b bname # create & switch to a new branch
+git push origin --delete bname # remove a remote branch
 
 git status
 ```
