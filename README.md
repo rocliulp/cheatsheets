@@ -18,6 +18,9 @@ uuidgen
 cmd1 && cmd2 && cmd3
 cmd1 || cmd2 || cmd3
 
+zip –r filename.zip directory_name
+unzip -x -d dir file.zip
+
 echo "aaabbbccc" | base64
 echo "YWFhYmJiY2NjCg==" | base64 --decode
 
@@ -227,6 +230,11 @@ kubectl get secret mariadb-root-password -o jsonpath='{.data.password}'
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}' | base64 --decode -
 # node
 kubectl get nodes -l "nodetype=mylabel"
+# taint node https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+kubectl taint node mynode key=value:NoSchedule
+# stats & monitoring
+kubectl top pod -n nsname
+kubectl top node -n nsname
 ```
 
 # git
@@ -256,6 +264,16 @@ git checkout -b bname # create & switch to a new branch
 git push origin --delete bname # remove a remote branch
 
 git status
+
+# merge specific branch to master workflow
+git checkout master
+git branch new-branch
+git checkout new-branch
+# ...develop some code...
+git add –A
+git commit –m "Some commit message"
+git checkout master
+git merge new-branch # merger parameter branch(new-branch) to the current working branch(master)
 ```
 # springboot
 ```bash
