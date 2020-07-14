@@ -157,7 +157,10 @@ curl -u usr:pwd -X GET https://docker-register.fqdn.com/v2/repo/img/tags/list
 ```
 
 # k8s
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward
+
 https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
+
 ```bash
 # https://medium.com/faun/kubectl-commands-cheatsheet-43ce8f13adfb
 # explain to check the yaml filelds usage 
@@ -235,6 +238,14 @@ kubectl taint node mynode key=value:NoSchedule
 # stats & monitoring
 kubectl top pod -n nsname
 kubectl top node -n nsname
+
+# port-forward - https://kubernetes.io/zh/docs/tasks/access-application-cluster/port-forward-access-application-cluster/ - 与本地 7000 端口建立的连接将转发到运行 Redis 服务器的 pod 的 6379 端口。通过此连接，您可以使用本地工作站来调试在 pod 中运行的数据库。
+kubectl port-forward redis-master-765d459796-258hz 7000:6379
+kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
+kubectl port-forward deployment/redis-master 7000:6379
+kubectl port-forward rs/redis-master 7000:6379
+kubectl port-forward svc/redis-master 7000:6379
+redis-cli -p 7000
 ```
 
 # git
@@ -291,6 +302,7 @@ mvn dependency:list
 mvn dependency:analyze
 ```
 # gradle
+[Gradle scripts](https://github.com/davenkin/gradle-learning)
 ```
 
 ```
@@ -419,7 +431,8 @@ docker exec -it dbcontainer mysql -N -B --raw -u dbuser -pdbpass db -e "SELECT *
 ```
 
 # tmux
-https://tmuxcheatsheet.com/
+[tmuxcheatsheet.com](https://tmuxcheatsheet.com/)
+
 Shortcuts                                   | decription
 --------------------------------------------|---------------------------
 Ctrl+b - "                                  | split a pane horizontally
@@ -431,8 +444,18 @@ Ctrl+b - PgUp | go directly into copy mode and scroll one page up
 set -g mouse on        | #For tmux version 2.1 and up
 set -g mode-mouse on  |  #For tmux versions < 2.1
 tmux -u | UTF-8
-https://github.com/gpakosz/.tmux
+[gpakosz tmux config](https://github.com/gpakosz/.tmux)
 http://louiszhai.github.io/2017/09/30/tmux/
 https://readthedocs.org/projects/tao-of-tmux-chinese/downloads/pdf/latest/
+
+# Jenkins
+[Pipeline scripts](https://www.w3cschool.cn/jenkins/jenkins-jg9528pb.html)
+
 # markdown
-https://guides.github.com/features/mastering-markdown/
+
+[Github Mastering-markdown](https://guides.github.com/features/mastering-markdown/)
+
+[runoob.com Grammar](https://www.runoob.com/markdown/md-advance.html)
+
+[appinn Grammar](https://www.appinn.com/markdown/)
+
