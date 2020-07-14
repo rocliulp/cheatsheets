@@ -3,12 +3,16 @@ cheatsheets
 
 # bash & linux
 ```bash
+# http://ezprompt.net/ a tool for PS1 settings.
+PS1="\[\e[35m\]\j\s\v \D{%Y-%m-%dT%H:%M:%S%z} \u@\h:\w/\[\e[m\]"
+alias ls='ls -atlrh --color=auto'
 bash -c "ls -atlrh /tmp"
 readlink -f file.txt # show full path of a file
 ls -atlrhd name*tag
 mkdir -p /dir1/dir2/{dira,dirb}
 for i in {1..150}; do echo "$i"; sleep 1; done
 while true; do printf .; sleep 5;done
+while [[ true ]]; do ls -atlrh; sleep 5; done
 
 awk '/0.5/ {print $0}' teams.txt
 awk '/0.5/ {print $1,$2}' teams.txt
@@ -44,6 +48,7 @@ make
 make install
 
 # ssh&scp usage
+alias ssh='ssh -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" -o "TCPKeepAlive=yes" -o "ServerAliveInterval=30"'
 scp -o "ForwardAgent=yes" -i id_rsa -F config -oProxyJump=jmp user@host:/tmp/file locfile
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
 
@@ -58,9 +63,10 @@ Host jmp
     HostKeyAlgorithms=+ssh-dss
     ForwardAgent yes
     LogLevel error
-    ServerAliveInterval 12
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    TCPKeepAlive yes
+    ServerAliveInterval 30
 ```
 ## DNS
 ```bash
@@ -231,6 +237,8 @@ nohup kubectl -n ns exec podcontainer -- mysql -uroot -ppasswd -e "source /tmp/d
 # https://opensource.com/article/19/6/introduction-kubernetes-secrets-and-configmaps
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}'
 kubectl get secret mariadb-root-password -o jsonpath='{.data.password}' | base64 --decode -
+kubectl -n ns get secret secretname --template={{.data.keyname}} | base64 --decode -
+kubectl -n dev get secret sre-grafana-secret -o
 # node
 kubectl get nodes -l "nodetype=mylabel"
 # taint node https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
@@ -413,6 +421,10 @@ rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ```vim
 " vim on Mac Terminal, change encoding for Chinese:
 :e ++enc=gb2312 filename
+
+" Remove invisible newline at the end of line. 'echo -n "string"'?
+:set noendofline binary
+:wq
 ```
 
 # mysql
