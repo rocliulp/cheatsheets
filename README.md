@@ -465,10 +465,9 @@ https://readthedocs.org/projects/tao-of-tmux-chinese/downloads/pdf/latest/
 
 [Global Variable Reference: docker, pipeline, env, params, currentBuild, scm objects usage](https://opensource.triology.de/jenkins/pipeline-syntax/globals)
 
-``` txt
 Jenkinsfile Pipeline有两种基本格式：
-	1. Declarative Pipeline （新）
-	2. Scripted Pipeline （旧）
+1. Declarative Pipeline （新）
+2. Scripted Pipeline （旧）
 
 其中的第二种Scripted Pipeline比较古老。它功能强大。允许通过脚本写出较高级的Pipeline。但使用不一定便捷。有些使用甚至繁琐费力。
 第一种Declarative Pipeline更常见些并且也更便捷。可能需要Config中的Plugins设置配合。
@@ -476,7 +475,6 @@ Jenkinsfile Pipeline有两种基本格式：
 
 Declarative Pipeline的最外层为Pipeline {}
 Scripted Pipeline的最外层为node {}
-```
 
 # markdown
 
