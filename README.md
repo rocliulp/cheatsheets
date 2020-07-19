@@ -31,7 +31,7 @@ sed -e '/a/,/e/ s/5/55/g' -e '/1/,/a/ s/2/22/g' data.txt
 #a	b	c	d
 #55	6	7	8
 #q	w	e	e
-sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' -e '/1/,/a/ s/2/22/g' data.txt
+sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' -e '/1/,/a/ s/2/22/g' data.txt # backreference sometimes get same result than awk
 #1	22	3	4
 #a	b	c	d
 #5	66	7	8
@@ -497,11 +497,13 @@ Jenkinsfile Pipeline有两种基本格式：
 2. Scripted Pipeline （旧）
 
 其中的第二种Scripted Pipeline比较古老。它功能强大。允许通过脚本写出较高级的Pipeline。但使用不一定便捷。有些使用甚至繁琐费力。
+
 第一种Declarative Pipeline更常见些并且也更便捷。可能需要Config中的Plugins设置配合。
 总的来说Declarative Pipeline中也能实现Scripted Pipeline的功能。需要将脚本写在Pipeline -> Stages -> Stage -> steps - script的block中。基本能实现相同的效果。
 
-Declarative Pipeline的最外层为Pipeline {}
-Scripted Pipeline的最外层为node {}
+Declarative Pipeline的最外层为Pipeline {}。
+
+Scripted Pipeline的最外层为node {}。
 
 # markdown
 
