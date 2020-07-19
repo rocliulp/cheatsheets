@@ -14,10 +14,37 @@ for i in {1..150}; do echo "$i"; sleep 1; done
 while true; do printf .; sleep 5;done
 while [[ true ]]; do ls -atlrh; sleep 5; done
 
+# data.txt
+# 1	2	3	4
+# a	b	c	d
+# 5	6	7	8
+# q	w	e	e
+
+# text tools 
+sed -e '/a/,/e/ s/5/55/g' data.txt
+#1	2	3	4
+#a	b	c	d
+#55	6	7	8
+#q	w	e	e
+sed -e '/a/,/e/ s/5/55/g' -e '/1/,/a/ s/2/22/g' data.txt
+#1	22	3	4
+#a	b	c	d
+#55	6	7	8
+#q	w	e	e
+sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' -e '/1/,/a/ s/2/22/g' data.txt
+#1	22	3	4
+#a	b	c	d
+#5	66	7	8
+#q	w	e	e
+sed -e '/a/,/e/ s/5/55/g' data.txt  | awk '/a/,/e/ {print $1}'
+#a
+#55
+#q
 awk '/0.5/ {print $0}' teams.txt
 awk '/0.5/ {print $1,$2}' teams.txt
 awk '/^[0-9]/ {print $1}' teams.txt
 awk '/A1/ {print $NF}' file
+
 uuidgen
 cmd1 && cmd2 && cmd3
 cmd1 || cmd2 || cmd3
