@@ -31,15 +31,22 @@ sed -e '/a/,/e/ s/5/55/g' -e '/1/,/a/ s/2/22/g' data.txt
 #a	b	c	d
 #55	6	7	8
 #q	w	e	e
-sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' -e '/1/,/a/ s/2/22/g' data.txt # backreference sometimes get same result than awk
+sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' -e '/1/,/a/ s/2/22/g' data.txt # Replace specific words/patterns by sed. Backreference sometimes get same result than awk
 #1	22	3	4
 #a	b	c	d
 #5	66	7	8
 #q	w	e	e
+sed -e '/a/,/e/ s/^\(.*\)6\(.*\)$/\166\2/g' data.txt | awk '/1/,/a/ {$2=$2$2;print}'
+#1 22 3 4
+#a bb c d
 sed -e '/a/,/e/ s/5/55/g' data.txt  | awk '/a/,/e/ {print $1}'
 #a
 #55
 #q
+sed -e '/a/,/e/ s/5/55/g' data.txt  | awk '/a/,/e/ {$2=$2$2;print}' # replace by awk, replace specific columns
+#a bb c d
+#55 66 7 8
+#q ww e e
 awk '/0.5/ {print $0}' teams.txt
 awk '/0.5/ {print $1,$2}' teams.txt
 awk '/^[0-9]/ {print $1}' teams.txt
