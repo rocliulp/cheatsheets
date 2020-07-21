@@ -232,7 +232,10 @@ kubectl delete deployment deployment1 deployment2 deployment3
 kubectl get configmap -n ns
 # secret
 kubectl create secret generic my-secret -n ns --from-file=PASSPHRASE=PASSPHRASE.txt --from-file=MY_PRIVATE_KEY=MY_PRIVATE_KEY.txt
+# below one works better for recreating a secret. '--dry-run -o yaml' it's a good way to learn kubectl usage.
+kubectl create secret generic my-secret -n ns --from-file=PASSPHRASE=PASSPHRASE.txt --from-file=MY_PRIVATE_KEY=MY_PRIVATE_KEY.txt --dry-run -o yaml | kubectl apply -f -
 kubectl create secret generic my-secret -n ns --from-literal=ADMIN_USER_NAME=admin --from-file=ADMIN_USER_TOKEN=ADMIN_USER_ACCESS_TOKEN.txt
+kubectl -n ns delete secret my-secret
 kubectl get secret -n ns
 kubectl describe secret my-secret -n ns
 # filter/selector/sort
