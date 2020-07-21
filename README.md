@@ -59,6 +59,16 @@ cmd1 || cmd2 || cmd3
 zip –r filename.zip directory_name
 unzip -x -d dir file.zip
 
+#tar
+#compress
+tar -zcvf app.tar app
+tar -zvcf buodo.tar.gz buodo
+tar -jvcf buodo.tar.bz2 buodo
+#extract
+tar -zxvf prog-1-jan-2005.tar.gz
+tar -zxvf ×××.tar.gz
+tar -jxvf ×××.tar.bz2
+
 echo "aaabbbccc" | base64
 echo "YWFhYmJiY2NjCg==" | base64 --decode
 
