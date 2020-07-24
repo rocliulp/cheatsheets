@@ -13,6 +13,7 @@ mkdir -p /dir1/dir2/{dira,dirb}
 for i in {1..150}; do echo "$i"; sleep 1; done
 while true; do printf .; sleep 5;done
 while [[ true ]]; do ls -atlrh; sleep 5; done
+env TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S %z"
 
 # data.txt
 # 1	2	3	4
@@ -139,7 +140,12 @@ word    |               |   M-Backspace
 char    |   C-d         |   Backspace
 space   |               |   C-w
 line    |   C-u         |   C-k
-
+## performance
+```bash
+vmstat 5 10
+sar 1 3
+mpstat 1 3 # same with sar?
+```
 # docker
 ```bash
 pkill -9 containerd-shim
