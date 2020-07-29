@@ -11,8 +11,15 @@ readlink -f file.txt # show full path of a file
 ls -atlrhd name*tag
 mkdir -p /dir1/dir2/{dira,dirb}
 for i in {1..150}; do echo "$i"; sleep 1; done
+for i in $(seq 1 10); do echo "aaa${i}aaa"; done
 while true; do printf .; sleep 5;done
 while [[ true ]]; do ls -atlrh; sleep 5; done
+mount -t glusterfs -o acl ip:/export_path /local_path/mnt
+mount -t glusterfs -o ro ip:/export_path /local_path/mnt # readonly
+mount -t nfs ip:/export_path /local_path/mnt
+
+nmap hostname # check which ports are opened on the host
+
 env TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S %z"
 
 # data.txt
@@ -96,7 +103,7 @@ make install
 alias ssh='ssh -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" -o "TCPKeepAlive=yes" -o "ServerAliveInterval=30"'
 scp -o "ForwardAgent=yes" -i id_rsa -F config -oProxyJump=jmp user@host:/tmp/file locfile
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
-
+scp -i private_key_path -oProxyJump=jum user@host:remote_file_path local_path
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
 ## ssh config
@@ -232,11 +239,21 @@ kubectl cp ns/pod:root-dir/dir/file local-dir # Did not verify that yet.
 kubectl -n ns logs --tail 100 -f pod
 kubectl -n ns rollout restart -f deployment.yaml
 kubectl rollout restart deployment mydeploy
+kubectl rollout status deployment.v1.apps/nginx-deployment
+kubectl rollout pause deployment/nginx-deployment deployment "nginx-deployment" paused
+kubectl rollout history deployment/nginx-deployment --revision=2
+kubectl rollout undo deployment/nginx-deployment
+kubectl rollout undo deployment/nginx-deployment --to-revision=2
+# rollout pasuse/resume usage
+kubectl rollout pause deployment/nginx-deployment
+kubectl set image deploy/nginx-deployment nginx=nginx:1.7.9
+kubectl rollout resume deploy/nginx-deployment
 # You can set some environment variable which will force your deployment pods to restart:
 kubectl set env deployment mydeploy DEPLOY_DATE="$(date)"
 ## {
 kubectl scale deployment mydeploy --replicas=0
 kubectl scale deployment mydeploy --replicas=1
+kubectl scale deployment nginx-deployment --replicas=5
 ## }
 kubectl -n ns delete pod pdname --grace-period=0 --force
 # service
