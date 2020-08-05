@@ -18,9 +18,8 @@ mount -t glusterfs -o acl ip:/export_path /local_path/mnt
 mount -t glusterfs -o ro ip:/export_path /local_path/mnt # readonly
 mount -t nfs ip:/export_path /local_path/mnt
 
-nmap hostname # check which ports are opened on the host
-
 env TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S %z"
+date +P%Y%m%d%H%M%S%N%z | sed "s/+/E/g" | sed "s/-/W/g"
 
 # data.txt
 # 1	2	3	4
@@ -120,19 +119,6 @@ Host jmp
     TCPKeepAlive yes
     ServerAliveInterval 30
 ```
-## DNS
-```bash
-# https://www.hostinger.com/tutorials/how-to-use-the-dig-command-in-linux/
-dig +answer +short hostname.corp.com
-dig +answer +short -x ip.ip.ip.ip
-dig hostinger.com +trace
-https://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/
-dig Hostname
-dig DomaiNameHere
-dig @DNS-server-name Hostname
-dig @DNS-server-name IPAddress
-dig @DNS-server-name Hostname|IPAddress type
-```
 ## cursor movement
 
 Move by |   Forward |   Backward
@@ -153,6 +139,30 @@ vmstat 5 10
 sar 1 3
 mpstat 1 3 # same with sar?
 ```
+## More
+[bash.md](bash.md)
+[sed.md](sed.md)
+[awk.md](awk.md)
+# Network
+```
+nmap hostname # check which ports are opened on the host
+```
+## DNS
+```bash
+# https://www.hostinger.com/tutorials/how-to-use-the-dig-command-in-linux/
+dig +answer +short hostname.corp.com
+dig +answer +short -x ip.ip.ip.ip
+dig hostinger.com +trace
+https://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/
+dig Hostname
+dig DomaiNameHere
+dig @DNS-server-name Hostname
+dig @DNS-server-name IPAddress
+dig @DNS-server-name Hostname|IPAddress type
+nslookup ip # find hostname from ip
+nslookup hostname # find ip from hostname
+```
+[More](network.md)
 # docker
 ```bash
 pkill -9 containerd-shim
@@ -398,7 +408,26 @@ SCAN 0 TYPE zset
 hscan hash 0
 ```
 
-# sql
+# python
+```bash
+docker run -it --rm -it --entrypoint=/bin/sh --name py3alpine python:3.8.3-alpine3.11
+docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
+```
+```python
+
+```
+
+# prometheus
+```prometheus
+# metric console query 
+metric_name{label="value"}[15m] offset 5m
+sum(metrics_name{label1="value1", label2="value2"})
+sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
+sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
+```
+
+# DB
+## sql
 ```sql
 -- mysql date:          str_to_date('2000-01-01 00:00:00', '%Y-%m-%d %T')
 -- oracle date:         to_date('2000-01-01 01:00:00', 'YYYY-MM-DD HH24:MI:SS')
@@ -440,25 +469,31 @@ DROP USER IF EXISTS 'user'@'%';
 DROP USER IF EXISTS 'user'@'localhost';
 ```
 
-# python
+## sqlplus
 ```bash
-docker run -it --rm -it --entrypoint=/bin/sh --name py3alpine python:3.8.3-alpine3.11
-docker run -it --rm -it --entrypoint=/bin/sh --name py2 python:2
-```
-```python
-
+echo '127.0.0.1 ${HOSTNAME}' >> /etc/hosts # For sql on Mac sometimes
+rlwrap sqlplus usr/pwd@//host:port/dbins
+rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ```
 
-# prometheus
-```prometheus
-# metric console query 
-metric_name{label="value"}[15m] offset 5m
-sum(metrics_name{label1="value1", label2="value2"})
-sum(predict_linear(metric_name{label1="value1",label2="value2"}[20m], 3600*5))
-sum(predict_linear(metric_name{label1="value1",label2="value2",label3="value3",label4="value4"}[1h],4*3600))<0
+## mysql
+https://gist.github.com/hofmannsven/9164408
+```bash
+# mycli - https://hub.docker.com/r/diyan/mycli
+docker run --rm diyan/mycli --help
+docker run -d --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:5.7
+docker run --rm -ti --name=mycli --link=mysql:mysql diyan/mycli --host=mysql --database=mysql --user=root --password=secret
+# https://github.com/chaifeng/docker-mysql-mycli -- looks better...
+docker run --rm -it --name mycli -e MYSQL_DATABASE=dbname -e MYSQL_HOST=dbhost -e MYSQL_USER=root -e MYSQL_PASSWORD="secret" --network db_default chaifeng/mycli
+
+docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbname -v /data/dbname:/var/lib/mysql -p 3306:3306 --restart=on-failure -d mariadb:10.3
+docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
+docker exec -it dbcontainer mysql -N -B --raw -u dbuser -pdbpass db -e "SELECT * FROM mytable;"
 ```
-# emacs
-## cursor movement
+more: [mysql.md](mysql.md)
+# Editors
+## emacs
+### cursor movement
 Move by     |   Forward |   Backward
 ------------|-----------|-----------
 character   |   C-f     |   C-b
@@ -481,13 +516,7 @@ Notice that the commands are somewhat mnemonic:
 * "a" stands for "beginning" (like the beginning of the alphabet)
 * "e" stands for "end"
 
-# sqlplus
-```bash
-echo '127.0.0.1 ${HOSTNAME}' >> /etc/hosts # For sql on Mac sometimes
-rlwrap sqlplus usr/pwd@//host:port/dbins
-rlwrap sqlplus usr/pwd@//localhost:port/dbins
-```
-# vim
+## vim
 ```vim
 " vim on Mac Terminal, change encoding for Chinese:
 :e ++enc=gb2312 filename
@@ -495,21 +524,6 @@ rlwrap sqlplus usr/pwd@//localhost:port/dbins
 " Remove invisible newline at the end of line. 'echo -n "string"'?
 :set noendofline binary
 :wq
-```
-
-# mysql
-https://gist.github.com/hofmannsven/9164408
-```bash
-# mycli - https://hub.docker.com/r/diyan/mycli
-docker run --rm diyan/mycli --help
-docker run -d --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:5.7
-docker run --rm -ti --name=mycli --link=mysql:mysql diyan/mycli --host=mysql --database=mysql --user=root --password=secret
-# https://github.com/chaifeng/docker-mysql-mycli -- looks better...
-docker run --rm -it --name mycli -e MYSQL_DATABASE=dbname -e MYSQL_HOST=dbhost -e MYSQL_USER=root -e MYSQL_PASSWORD="secret" --network db_default chaifeng/mycli
-
-docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbname -v /data/dbname:/var/lib/mysql -p 3306:3306 --restart=on-failure -d mariadb:10.3
-docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
-docker exec -it dbcontainer mysql -N -B --raw -u dbuser -pdbpass db -e "SELECT * FROM mytable;"
 ```
 
 # tmux
