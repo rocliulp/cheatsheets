@@ -143,6 +143,7 @@ mpstat 1 3 # same with sar?
 [bash.md](bash.md)
 [sed.md](sed.md)
 [awk.md](awk.md)
+
 # Network
 ```
 nmap hostname # check which ports are opened on the host
@@ -197,6 +198,8 @@ docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -ti name bash
 docker run --rm --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
+docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6 # apk update && apk add bash && apk add curl && apk add coreutils
+
 # progrium/busybox
 # alpine:3.11.6
 # python:3.8.3-alpine3.11
@@ -303,10 +306,24 @@ kubectl get all --selector=app=applabelname
 # https://blog.mayadata.io/openebs/kubernetes-label-selector-and-field-selector
 kubectl get pod --field-selector metadata.name=redis-aaabbbccc-w895j -n ns # need full name. Cannot regex
 kubectl get pod --field-selector spec.name=label-example
+# jobs/cronjobs are NOT samething. So check you jobs/cronjobs seperately.
+kubectl -n ns get job
+kubectl -n ns delete job jobname
+kubectl -n ns get cronjobs
+kubectl -n ns get cronjob myjobname
+kubectl -n ns delete cronjob jobname
 # pod&svc&run&mariadb&mysql&network diagnostics
 # https://kubernetes.io/zh/docs/tasks/run-application/run-single-instance-stateful-application/
 # https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/mariadb
-kubectl run -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h svcname.namespace.svc.cluster.local -u root -ppasswd
+kubectl run -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h 
+kubectl run mycontainername -it --rm --image=owner/mariadb:tag --restart=Never mysql-client -- mysql -h svcname.namespace.svc.cluster.local -u root -ppasswd
+# By default kubectl run would create a deployment for the 'run' pod/container. If you don't want the deployment created please use '--generator=run-pod/v1'
+Use generators for this, default kubectl run will create a deployment object. If you want to override this behavior use "run-pod/v1" generator.
+	kubectl run --generator=run-pod/v1 nginx1 --image=nginx
+You may refer the link below for better understanding.
+# https://kubernetes.io/docs/reference/kubectl/conventions/#generators
+kubectl -n dev run  -it --generator=run-pod/v1 --rm --restart=Never --image=imageurl mypodname -- sh
+
 kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl
 kubectl -n ns run --rm --image=radial/busyboxplus:curl --restart=Never curl -- curl url
 kubectl -n ns run --rm -it --image=busybox --restart=Never mybusybox -- sh
@@ -321,6 +338,10 @@ kubectl -n ns get secret secretname --template={{.data.keyname}} | base64 --deco
 kubectl -n dev get secret sre-grafana-secret -o
 # node
 kubectl get nodes -l "nodetype=mylabel"
+# Get specific fields 
+kubectl -n ns get pod --selector=app=myapp -o=custom-columns=NAME:.metadata.name
+kubectl -n ns get pod --selector=app=myapp -o=custom-columns=:.metadata.name
+kubectl -n ns logs --tail 100 -f $(kubectl -n ns get pod --selector=app=myapp -o=custom-columns=:.metadata.name)
 # taint node https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 kubectl taint node mynode key=value:NoSchedule
 # stats & monitoring
@@ -328,6 +349,7 @@ kubectl top pod -n nsname
 kubectl top node -n nsname
 
 # port-forward - https://kubernetes.io/zh/docs/tasks/access-application-cluster/port-forward-access-application-cluster/ - 与本地 7000 端口建立的连接将转发到运行 Redis 服务器的 pod 的 6379 端口。通过此连接，您可以使用本地工作站来调试在 pod 中运行的数据库。
+# looks 'port-forward' does not work always over ssh tunnel...So needs to work in VM instead of ssh tunnel
 kubectl port-forward redis-master-765d459796-258hz 7000:6379
 kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
 kubectl port-forward deployment/redis-master 7000:6379
@@ -352,6 +374,7 @@ git push
 # get latest code regardless local changes
 # rm -rf .
 git reset --hard HEAD
+git reset localfile # reset local file which is in stage only but not commit to any branch
 git clean -xffd
 git pull
 
