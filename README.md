@@ -79,6 +79,13 @@ tar -jxvf ×××.tar.bz2
 echo "aaabbbccc" | base64
 echo "YWFhYmJiY2NjCg==" | base64 --decode
 
+ln -s [OPTIONS] (target)FILE LINK
+# change own for link itself instead of the link target.
+chown -h user1 jakarta
+# show file full path. Show link target path(not link file path)
+readlink -f filename
+echo $PWD/20200908182742UTC.sql
+
 nohup myprogram </dev/null >myprogram.log 2>&1 &
 
 # curl with user:pwd
@@ -164,7 +171,21 @@ nslookup ip # find hostname from ip
 nslookup hostname # find ip from hostname
 ```
 [More](network.md)
+
+## iptables
+```bash
+# save iptables rules
+service iptables save
+
+# set default rule for INPUT chain. If default is drop(should not be REJECT) it should be the last one. Insert other ACCEPT rules. If default is ACCEPT insert other DROP/REJECT rules
+sudo iptables -P INPUT DROP
+# remove all rules of INPUT chain
+sudo iptables -F INPUT
+```
+
+
 # docker
+
 ```bash
 pkill -9 containerd-shim
 
@@ -506,12 +527,16 @@ https://gist.github.com/hofmannsven/9164408
 docker run --rm diyan/mycli --help
 docker run -d --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:5.7
 docker run --rm -ti --name=mycli --link=mysql:mysql diyan/mycli --host=mysql --database=mysql --user=root --password=secret
-# https://github.com/chaifeng/docker-mysql-mycli -- looks better...
+# https://github.com/chaifeng/docker-mysql-mycli -- looks better... but not work...
 docker run --rm -it --name mycli -e MYSQL_DATABASE=dbname -e MYSQL_HOST=dbhost -e MYSQL_USER=root -e MYSQL_PASSWORD="secret" --network db_default chaifeng/mycli
 
 docker run --name dbname -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbname -v /data/dbname:/var/lib/mysql -p 3306:3306 --restart=on-failure -d mariadb:10.3
 docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
 docker exec -it dbcontainer mysql -N -B --raw -u dbuser -pdbpass db -e "SELECT * FROM mytable;"
+####
+docker run --rm --name=dbname -it -e MYSQL_ROOT_PASSWORD=root_pass -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbpass -e MYSQL_DATABASE=dbtest  mariadb:10.3
+docker exec -it dbname bash
+docker run --rm -ti --name=mycli --link=dbname:dbname diyan/mycli --host=dbname --user=root --password=root_pass
 ```
 more: [mysql.md](mysql.md)
 # Editors
