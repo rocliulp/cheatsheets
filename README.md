@@ -220,6 +220,7 @@ docker run --rm --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage
 docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
 docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
 docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6 # apk update && apk add bash && apk add curl && apk add coreutils
+docker run --rm -it toolbox:0.0.1
 
 # progrium/busybox
 # alpine:3.11.6
@@ -231,6 +232,7 @@ docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6 # apk update && apk add b
 # amouat/network-utils
 # pstauffer/curl
 # byrnedo/alpine-curl 
+# websocat?
 docker inspect container
 
 # docker build
