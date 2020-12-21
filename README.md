@@ -21,6 +21,8 @@ mount -t nfs ip:/export_path /local_path/mnt
 env TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S %z"
 date +P%Y%m%d%H%M%S%N%z | sed "s/+/E/g" | sed "s/-/W/g"
 
+ps -eo pid,comm,lstart,etime,time,args | grep tomcat
+
 # data.txt
 # 1	2	3	4
 # a	b	c	d
@@ -373,11 +375,11 @@ kubectl top node -n nsname
 
 # port-forward - https://kubernetes.io/zh/docs/tasks/access-application-cluster/port-forward-access-application-cluster/ - 与本地 7000 端口建立的连接将转发到运行 Redis 服务器的 pod 的 6379 端口。通过此连接，您可以使用本地工作站来调试在 pod 中运行的数据库。
 # looks 'port-forward' does not work always over ssh tunnel...So needs to work in VM instead of ssh tunnel
-kubectl port-forward redis-master-765d459796-258hz 7000:6379
-kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
-kubectl port-forward deployment/redis-master 7000:6379
-kubectl port-forward rs/redis-master 7000:6379
-kubectl port-forward svc/redis-master 7000:6379
+kubectl -n ns port-forward redis-master-765d459796-258hz 7000:6379
+kubectl -n ns port-forward pods/redis-master-765d459796-258hz 7000:6379
+kubectl -n ns port-forward deployment/redis-master 7000:6379
+kubectl -n ns port-forward rs/redis-master 7000:6379
+kubectl -n ns port-forward svc/redis-master 7000:6379
 redis-cli -p 7000
 ```
 
