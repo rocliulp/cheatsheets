@@ -97,6 +97,7 @@ curl -i -X PUT -H "Content-Type: multipart/form-data" -F "apivarname=@locfilepat
 # http://host:port(8080/8081/...)/swagger-ui.html
 # curl output and pipe redirect
 curl -X PUT http://localhost:8080/api/v1/method -o std.out > out.std 2>&1 &
+curl -g -G --data-urlencode 'match[]={label=~"label1|label2"}' http://host:port/federate > out.prom
 
 # Install package from source without root/sudo
 wget http://sourceforge.net/projects/sshpass/files/latest/download -O sshpass.tar.gz
