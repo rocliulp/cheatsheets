@@ -61,6 +61,18 @@ awk '/0.5/ {print $1,$2}' teams.txt
 awk '/^[0-9]/ {print $1}' teams.txt
 awk '/A1/ {print $NF}' file
 
+# Merge every two lines into one from command line
+awk 'NR%2{printf "%s ",$0;next;}1' file.txt
+sed 'N;s/\n/ /' file.txt
+paste -d " "  - - < file.txt
+cat file.txt | xargs -n2 -d'\n'
+awk '{key=$0; getline; print key ", " $0;}' file.txt
+while read line1; do read line2; echo "$line1, $line2"; done < file.txt
+awk 'ORS=NR%2?FS:RS' file.txt
+awk '{ ORS = (NR%2 ? FS : RS) } 1' file.txt
+awk '{ ORS = (NR%2 ? "," : RS) } 1' file.txt
+perl -0pe 's/(.*)\n(.*)\n/$1 $2\n/g' file.txt
+
 uuidgen
 cmd1 && cmd2 && cmd3
 cmd1 || cmd2 || cmd3
@@ -623,3 +635,32 @@ Scripted Pipeline的最外层为node {}。
 
 [appinn Grammar](https://www.appinn.com/markdown/)
 
+
+
+# Go
+```bash
+go test
+go run main.go
+go mod init example.com/hello
+go mod tidy
+
+go get rsc.io/sampler
+go get golang.org/x/text
+go list -m -versions rsc.io/sampler
+go list -m all
+
+go doc rsc.io/quote/v3
+
+go build
+go build -o your-desired-name
+
+# https://blog.golang.org/using-go-modules
+# This post introduced these workflows using Go modules:
+
+go mod init creates a new module, initializing the go.mod file that describes it.
+go build, go test, and other package-building commands add new dependencies to go.mod as needed.
+go list -m all prints the current module’s dependencies.
+go get changes the required version of a dependency (or adds a new dependency).
+go mod tidy removes unused dependencies.
+
+```
