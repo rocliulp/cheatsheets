@@ -414,6 +414,7 @@ git push
 git reset --hard HEAD
 git reset localfile # reset local file which is in stage only but not commit to any branch
 git clean -xffd
+git clean -fx -d # Clean your git workspace. Remove all files that is not tracked by git.
 git pull
 
 # branch
@@ -452,10 +453,17 @@ mvn dependency:analyze
 ```
 # gradle
 [Gradle scripts](https://github.com/davenkin/gradle-learning)
-```
 
+```bash
+gradle taskname
+gradle idea # Intellij idea plugin
 ```
+https://livebook.manning.com/book/gradle-in-action/list-of-tables/
+
+https://eta-lang.org/docs/cheatsheets/gradle-cheatsheet
+
 # redis
+
 ```bash
 redis-server redis.conf
 redis-cli -c -p port -h host
