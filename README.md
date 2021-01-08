@@ -162,7 +162,7 @@ sar 1 3
 mpstat 1 3 # same with sar?
 ```
 ## More
-[bash.md](bash.md)
+[bash.md](bash.md) [bash-script-cheatsheet](bash-script-cheatsheet.md)
 [sed.md](sed.md)
 [awk.md](awk.md)
 
