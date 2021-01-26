@@ -9,7 +9,13 @@ alias ls='ls -atlrh --color=auto'
 bash -c "ls -atlrh /tmp"
 readlink -f file.txt # show full path of a file
 ls -atlrhd name*tag
+ls -S # Sort by size
 mkdir -p /dir1/dir2/{dira,dirb}
+
+#Cp mutiple files to a directory(bash only)
+cp /home/ankur/folder/{file1,file2} /home/ankur/dest
+cp -t dest_dir file1 file2 file3
+
 for i in {1..150}; do echo "$i"; sleep 1; done
 for i in $(seq 1 10); do echo "aaa${i}aaa"; done
 while true; do printf .; sleep 5;done
@@ -73,6 +79,13 @@ awk '{ ORS = (NR%2 ? FS : RS) } 1' file.txt
 awk '{ ORS = (NR%2 ? "," : RS) } 1' file.txt
 perl -0pe 's/(.*)\n(.*)\n/$1 $2\n/g' file.txt
 
+# Show line numbers
+nl file.txt
+cat -b file.txt # Same as above cmd
+cat -n file.txt
+
+find / -type f -size +4G
+
 uuidgen
 cmd1 && cmd2 && cmd3
 cmd1 || cmd2 || cmd3
@@ -128,6 +141,7 @@ scp -i private_key_path -oProxyJump=jum user@host:remote_file_path local_path
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 ```
 ## ssh config
+
 ```config
 Host jmp
     Hostname host
@@ -161,7 +175,35 @@ vmstat 5 10
 sar 1 3
 mpstat 1 3 # same with sar?
 ```
+## yum
+```
+sudo yum update httpd keepalived net-tools
+
+sudo yum install install httpd
+sudo systemctl start httpd
+sudo systemctl status httpd
+sudo systemctl enable httpd
+# sudo systemctl disable httpd
+sudo systemctl reload httpd
+sudo systemctl restart httpd
+
+# sudo service keepalived start
+# sudo service keepalived status
+# systemctl is-enabled keepalived.service
+# systemctl is-active keepalived.service
+# systemctl is-failed keepalived.service
+# sudo chkconfig keepalived on
+# sudo chkconfig keepalived off
+# sudo service keepalived restart
+# systemctl list-units
+
+# If you want to use ifconfig to check ip
+sudo yum install -y net-tools
+sudo yum remove net-tools
+```
+
 ## More
+
 [bash.md](bash.md) [bash-script-cheatsheet](bash-script-cheatsheet.md)
 [sed.md](sed.md)
 [awk.md](awk.md)
@@ -229,6 +271,9 @@ docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
 
 # docker exec
 docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -ti name bash
+
+# docker commit
+docker commit container_id_or_name image_name:my_tag
 
 # docker run
 docker run --rm --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myimage:mytag
@@ -593,10 +638,12 @@ Notice that the commands are somewhat mnemonic:
 ```vim
 " vim on Mac Terminal, change encoding for Chinese:
 :e ++enc=gb2312 filename
-
+:e set guifont=PragmataPro:h15
 " Remove invisible newline at the end of line. 'echo -n "string"'?
 :set noendofline binary
 :wq
+:set nospell
+:set wrap!
 ```
 
 # tmux
@@ -670,5 +717,9 @@ go build, go test, and other package-building commands add new dependencies to g
 go list -m all prints the current module’s dependencies.
 go get changes the required version of a dependency (or adds a new dependency).
 go mod tidy removes unused dependencies.
-
+go fmt # automatically removes extraneous, optional trailing commas. You should always run that tool before building your code.
 ```
+
+[golang-101-hacks](https://github.com/NanXiao/golang-101-hacks/blob/master/posts/type-assertion-and-type-switch.md)
+
+[Effective go](https://golang.org/doc/effective_go.html)
