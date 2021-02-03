@@ -281,6 +281,8 @@ docker run --detach --name myname --hostname $(hostname -s) -e ENVNAME=MYENV myi
 docker run --rm -it --entrypoint=/bin/sh busybox:1.31.1
 docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6 # apk update && apk add bash && apk add curl && apk add coreutils
 docker run --rm -it toolbox:0.0.1
+docker run --rm -it --entrypoint=/bin/sh alpine:3.11.6
+docker run --rm -it --entrypoint=/bin/sh --user 1000:1000 alpine:3.11.6 # number(id) could be used without user created but when using username you have to create it first in Dockerfile. Install 'shadow' package if necessary
 
 # progrium/busybox
 # alpine:3.11.6
