@@ -139,6 +139,8 @@ scp -o "ForwardAgent=yes" -i id_rsa -F config -oProxyJump=jmp user@host:/tmp/fil
 sshpass -e scp -J jumphost1,jumphost2 -F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" deployment.yaml user@host:/directories/
 scp -i private_key_path -oProxyJump=jum user@host:remote_file_path local_path
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
+
+shellcheck scripts.sh
 ```
 ## ssh config
 
