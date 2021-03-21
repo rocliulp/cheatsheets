@@ -85,6 +85,7 @@ cat -b file.txt # Same as above cmd
 cat -n file.txt
 
 find / -type f -size +4G
+find ./userlog_*.log -type f  -mtime +365 -delete # remove file older than 1 year
 
 uuidgen
 cmd1 && cmd2 && cmd3
@@ -102,6 +103,17 @@ tar -jvcf buodo.tar.bz2 buodo
 tar -zxvf prog-1-jan-2005.tar.gz
 tar -zxvf ×××.tar.gz
 tar -jxvf ×××.tar.bz2
+
+# compress
+gzip filename
+gzip file1 file2 file3
+gzip -k filename
+gzip -r directory
+
+# extract
+gzip -d file.gz # file.gz file would be removed after extract
+gzip -dk file.gz # To keep the compressed file pass the -k option to the command
+gunzip file.gz
 
 echo "aaabbbccc" | base64
 echo "YWFhYmJiY2NjCg==" | base64 --decode
@@ -273,6 +285,7 @@ docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
 
 # docker exec
 docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -ti name bash
+docker exec -it --user user container_id sh
 
 # docker commit
 docker commit container_id_or_name image_name:my_tag
@@ -455,6 +468,7 @@ git config user.name "name"
 git clone https://github.com/acct/url.git
 # edit code/file
 git add ./yourfiles
+git rm ./yourfiles
 git commit -m "msg"
 git push
 
@@ -524,6 +538,8 @@ sscan myset 0 match f*
 scan 176 MATCH *11* COUNT 1000
 SCAN 0 TYPE zset
 hscan hash 0
+
+docker run -it --rm redis redis-cli -h host -p 6379 # Just run it from commad line. It does NOT work to 'docker exec -it container_name sh' or 'docker run -it --rm image sh' to the container then run 'redis-cli -h host -p port'
 ```
 
 # python
