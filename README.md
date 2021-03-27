@@ -498,6 +498,12 @@ git add –A
 git commit –m "Some commit message"
 git checkout master
 git merge new-branch # merger parameter branch(new-branch) to the current working branch(master)
+
+git log /path/file
+git show REVISION:/path/to/file # Replace REVISION with your actual revision (could be a Git commit SHA, a tag name, a branch name, a relative commit name, or any other way of identifying a commit in Git)
+git show HEAD~4:src/main.c
+git show HEAD@{2013-02-25}:./fileInCurrentDirectory.txt
+git diff commit_hash1 commit_hash2 /path/file
 ```
 # springboot
 ```bash
@@ -743,3 +749,12 @@ go fmt # automatically removes extraneous, optional trailing commas. You should�
 [golang-101-hacks](https://github.com/NanXiao/golang-101-hacks/blob/master/posts/type-assertion-and-type-switch.md)
 
 [Effective go](https://golang.org/doc/effective_go.html)
+
+
+
+# Vagrant
+```bash
+vagrant box add centos/7 # Get image
+vagrant box update --box centos/7 # Upgrade local image
+vagrant box remove centos/7 --box-version 1902.01 # Remove local image
+```
