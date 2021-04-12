@@ -86,6 +86,11 @@ cat -n file.txt
 
 find / -type f -size +4G
 find ./userlog_*.log -type f  -mtime +365 -delete # remove file older than 1 year
+find . -name ".svn" -exec rm -r "{}" \; # remove file/folder
+find . -name ".svn" -type d -exec rm -r "{}" \; # remove directory. ATTENTION: double quote 
+find . -name ".svn" -type d -exec rm -r {} +    #                   ATTENTION: without double quote
+find . -name ".svn" -type d -empty -delete # remove only when directory is empty (-delete remove only empty as well. looks -empty does not make any difference here on directory)
+find . -name test -type d -print0|xargs -0 rm -r --
 
 uuidgen
 cmd1 && cmd2 && cmd3
@@ -103,6 +108,9 @@ tar -jvcf buodo.tar.bz2 buodo
 tar -zxvf prog-1-jan-2005.tar.gz
 tar -zxvf ×××.tar.gz
 tar -jxvf ×××.tar.bz2
+# extract to specific directory instead the default/current working directory
+tar -xvf articles.tar -C /tmp/my_article/
+tar -xvf articles.tar --directory /tmp/my_articles/
 
 # compress
 gzip filename
@@ -153,6 +161,12 @@ scp -i private_key_path -oProxyJump=jum user@host:remote_file_path local_path
 sshpass -f filepath ssh -J jumphost1,jumphost2 -/F config -q -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "ForwardAgent=yes" user@host 'cmd'
 
 shellcheck scripts.sh
+
+rsync -r --verbose --exclude 'exclude_pattern1' --exclude 'exclude_pattern2' source target
+rsync -av --progress sourcefolder /destinationfolder --exclude thefoldertoexclude
+rsync -av --progress sourcefolder /destinationfolder --exclude thefoldertoexclude --exclude anotherfoldertoexclude
+
+du -hs * | sort -hr
 ```
 ## ssh config
 
@@ -337,6 +351,10 @@ https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-for
 
 https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/
 
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+
 ```bash
 # https://medium.com/faun/kubectl-commands-cheatsheet-43ce8f13adfb
 # explain to check the yaml filelds usage 
@@ -345,8 +363,8 @@ kubectl explain svc
 kubectl -n ns get deployment
 kubectl -n ns exec -ti pod -- sh
 kubectl -n ns cp etc pod:directories/etc # root directory does not need '/' to avoid error: tar: removing leading '/' from member names
-kubectl -n ns cp pod:directories/etc etc # root directory does not need '/' to avoid error: tar: removing leading '/' from member names
-kubectl cp ns/pod:root-dir/dir/file local-dir # Did not verify that yet.
+kubectl -n ns cp pod:directories/etc /localpath/file # root directory does not need '/' to avoid error: tar: removing leading '/' from member names. local/remote file needs to be a file and full path if necessary
+kubectl cp ns/pod:root-dir/dir/file /localpath/file # Did not verify that yet. local/remote file needs to be a file and full path if necessary
 # There might be articles showing cp files/dirs from a pod to another but so far I did not see any success when running that.
 
 kubectl -n ns logs --tail 100 -f pod
@@ -384,6 +402,12 @@ kubectl create secret generic my-secret -n ns --from-literal=ADMIN_USER_NAME=adm
 kubectl -n ns delete secret my-secret
 kubectl get secret -n ns
 kubectl describe secret my-secret -n ns
+kubectl -n ns edit deployment/my-nginx
+kubectl -n ns edit deployment deployment_name
+kubectl -n ns edit ConfigMap configmap_name
+kubectl create deployment my-nginx --image=nginx:1.14.2
+# kubectl create pod?
+
 # filter/selector/sort
 # https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/field-selectors/
 # https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/labels/
@@ -536,6 +560,19 @@ git push origin --delete <old_name>
 
 # That’s it. You have successfully renamed the local and remote Git branch.
 ```
+[Create new branch and push](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
+[Create new branch and push](https://www.git-tower.com/learn/git/faq/create-branch/)
+```bash
+# Before creating a new branch, pull the changes from upstream. Your master needs to be up to date.
+$ git pull
+# Create the branch on your local machine and switch in this branch :
+$ git checkout -b [name_of_your_new_branch]
+# Or create new branch base on another branch
+git branch <new-branch> <base-branch>
+# Push the branch on github :
+$ git push origin [name_of_your_new_branch]
+# When you want to commit something in your branch, be sure to be in your branch. Add -u parameter to set-upstream.
+```
 
 # springboot
 ```bash
@@ -644,6 +681,10 @@ FLUSH PRIVILEGES;
 
 DROP USER IF EXISTS 'user'@'%';
 DROP USER IF EXISTS 'user'@'localhost';
+
+-- oracle, unix epoch timestamp, https://blog.fawcs.info/2017/05/oracle-convert-datetime-to-epoch-unixtimestamp/
+select (extract(day from (EVENT_TIME  - to_date('01-JAN-1970','DD-MON-YYYY')))*86400+extract(hour from EVENT_TIME)*3600+extract(minute from EVENT_TIME)*60+extract(second from EVENT_TIME)) as EPOCH from SOMETABLE order by event_time DESC;
+
 ```
 
 ## sqlplus
@@ -653,7 +694,21 @@ rlwrap sqlplus usr/pwd@//host:port/dbins
 rlwrap sqlplus usr/pwd@//localhost:port/dbins
 ```
 
+```bash
+# Install sqlplus(instantclient) on linux
+# Download SQL*Plus Package (ZIP)
+# Download Basic Package (ZIP)
+unzip instantclient-basic-linux.x64-21.1.0.0.0.zip
+unzip instantclient-sqlplus-linux.x64-21.1.0.0.0.zip
+export ORACLE_HOME=/path/unzip_path
+export LD_LIBRARY_PATH="$ORACLE_HOME"
+export PATH="$ORACLE_HOME:$PATH"
+```
+
+
+
 ## mysql
+
 https://gist.github.com/hofmannsven/9164408
 ```bash
 # mycli - https://hub.docker.com/r/diyan/mycli
@@ -707,6 +762,11 @@ Notice that the commands are somewhat mnemonic:
 :wq
 :set nospell
 :set wrap!
+
+" Start easy mode(Insert Mode) in gvim. It works for all tabs(globally)
+:set im!
+" Or Menu: Edit -> Global Settings -> Toggle Insert Mode
+" In Inset Mode ESC cannot return to normal mode. You have to use CTL+o to switch to Cmd Mode under Insert Mode then type :set im!
 ```
 
 # tmux
