@@ -726,6 +726,11 @@ from
     (select extract(hour from min(TIME_COL))*3600 as hoursec from TABLE_NAME) B,
     (select extract(minute from min(TIME_COL))*60 as minsec from TABLE_NAME) C,
     (select extract(second from min(TIME_COL)) as secsec from TABLE_NAME) D;
+
+-- Oracle
+select * from all_tables where TABLE_NAME='TABLE_NAME';
+select * from ALL_IND_COLUMNS where table_name = 'TABLE_NAME' and index_owner = 'OWNER_NAME' and column_name='COL_NAME';
+
 ```
 
 ## sqlplus
