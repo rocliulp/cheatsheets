@@ -539,6 +539,28 @@ git reset --hard
 git reset HEAD <file>
 # Unstage everything - retain changes:
 git reset
+
+# https://www.internalpointers.com/post/squash-commits-into-one-git
+# https://stackoverflow.com/questions/6934752/combining-multiple-commits-before-pushing-in-git
+# Combining mutiple commits before push: squashing
+git rebase -i origin/master
+# This will bring up your text editor (-i is for "interactive") with a file that looks like this:
+#   pick 16b5fcc Code in, tests not passing
+#   pick c964dea Getting closer
+#   pick 06cf8ee Something changed
+#   pick 396b4a3 Tests pass
+#   pick 9be7fdb Better comments
+#   pick 7dba9cb All done
+# Change all the pick to squash (or s) except the first one:
+#   pick 16b5fcc Code in, tests not passing
+#   squash c964dea Getting closer
+#   squash 06cf8ee Something changed
+#   squash 396b4a3 Tests pass
+#   squash 9be7fdb Better comments
+#   squash 7dba9cb All done
+# Save your file and exit your editor. Then another text editor will open to let you combine the commit messages from all of the commits into one big commit message.
+
+
 ```
 [Rename git branch](https://linuxize.com/post/how-to-rename-local-and-remote-git-branch/)
 
@@ -685,6 +707,25 @@ DROP USER IF EXISTS 'user'@'localhost';
 -- oracle, unix epoch timestamp, https://blog.fawcs.info/2017/05/oracle-convert-datetime-to-epoch-unixtimestamp/
 select (extract(day from (EVENT_TIME  - to_date('01-JAN-1970','DD-MON-YYYY')))*86400+extract(hour from EVENT_TIME)*3600+extract(minute from EVENT_TIME)*60+extract(second from EVENT_TIME)) as EPOCH from SOMETABLE order by event_time DESC;
 
+-- ORACLE. Compound queries solutions on different sections.
+select (extract(day from (min(EVENT_TIME)  - to_date('01-JAN-1970','DD-MON-YYYY')))*86400+extract(hour from min(EVENT_TIME))*3600+extract(minute from min(EVENT_TIME))*60+extract(second from min(EVENT_TIME))) as epoch from TABLE_NAME;
+
+select (daysec + hoursec + minsec + secsec) as epoch
+from (
+    select
+        extract(day from (min(EVENT_TIME)  - to_date('01-JAN-1970','DD-MON-YYYY')))*86400 as daysec,
+        extract(hour from min(EVENT_TIME))*3600 as hoursec,
+        extract(minute from min(EVENT_TIME))*60 as minsec,
+        extract(second from min(EVENT_TIME)) as secsec
+    from TABLE_NAME
+);
+
+select (daysec + hoursec + minsec + secsec) as epoch
+from 
+    (select extract(day from (min(TIME_COL)  - to_date('01-JAN-1970','DD-MON-YYYY')))*86400 as daysec from TABLE_NAME) A,
+    (select extract(hour from min(TIME_COL))*3600 as hoursec from TABLE_NAME) B,
+    (select extract(minute from min(TIME_COL))*60 as minsec from TABLE_NAME) C,
+    (select extract(second from min(TIME_COL)) as secsec from TABLE_NAME) D;
 ```
 
 ## sqlplus
