@@ -731,6 +731,12 @@ from
 select * from all_tables where TABLE_NAME='TABLE_NAME';
 select * from ALL_IND_COLUMNS where table_name = 'TABLE_NAME' and index_owner = 'OWNER_NAME' and column_name='COL_NAME';
 
+--mysql
+SELECT @@global.time_zone, @@session.time_zone;
+SELECT UNIX_TIMESTAMP(STR_TO_DATE('Apr 15 2012 12:00AM', '%M %d %Y %h:%i%p'))
+SELECT FROM_UNIXTIME(UNIX_TIMESTAMP(STR_TO_DATE('Apr 15 2012 12:00AM', '%M %d %Y %h:%i%p')),'%m-%d-%Y %h:%i:%p')
+
+
 ```
 
 ## sqlplus
