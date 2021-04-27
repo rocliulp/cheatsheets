@@ -78,6 +78,7 @@ awk 'ORS=NR%2?FS:RS' file.txt
 awk '{ ORS = (NR%2 ? FS : RS) } 1' file.txt
 awk '{ ORS = (NR%2 ? "," : RS) } 1' file.txt
 perl -0pe 's/(.*)\n(.*)\n/$1 $2\n/g' file.txt
+perl -i.bak -pe 's{pattern_old}{pattern_new}g' file_name
 
 # Show line numbers
 nl file.txt
@@ -98,6 +99,7 @@ cmd1 || cmd2 || cmd3
 
 zip –r filename.zip directory_name
 unzip -x -d dir file.zip
+zip -re my_zip_folder.zip agatha.txt cpluplus.cpp test_dir # -e option to zip files with password
 
 #tar
 #compress
@@ -448,7 +450,7 @@ You may refer the link below for better understanding.
 # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
 kubectl -n dev run  -it --generator=run-pod/v1 --rm --restart=Never --image=imageurl mypodname -- sh
 
-kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl
+kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl -- cmd
 kubectl -n ns run --rm --image=radial/busyboxplus:curl --restart=Never curl -- curl url
 kubectl -n ns run --rm -it --image=busybox --restart=Never mybusybox -- sh
 kubectl -n ns exec  podcontainer -- mysqldump --all-databases --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
@@ -488,6 +490,9 @@ git config --global user.name "name"
 
 cd localgitrepopath
 git config user.name "name"
+git config --get remote.origin.url
+git remote show [remote-name] command
+git remote show origin
 
 git clone https://github.com/acct/url.git
 # edit code/file
@@ -560,7 +565,16 @@ git rebase -i origin/master
 #   squash 7dba9cb All done
 # Save your file and exit your editor. Then another text editor will open to let you combine the commit messages from all of the commits into one big commit message.
 
+# Revert to specific commit
+git reset --hard <commit-hash>
+git push -f origin master
 
+# Revert to specific commit
+git log --oneline
+git checkout be9055b .
+git add -A
+git commit -m "Revert commit: be9055b"
+git push
 ```
 [Rename git branch](https://linuxize.com/post/how-to-rename-local-and-remote-git-branch/)
 
