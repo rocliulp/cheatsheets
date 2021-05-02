@@ -448,11 +448,17 @@ Use generators for this, default kubectl run will create a deployment object. If
 	kubectl run --generator=run-pod/v1 nginx1 --image=nginx
 You may refer the link below for better understanding.
 # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
-kubectl -n dev run  -it --generator=run-pod/v1 --rm --restart=Never --image=imageurl mypodname -- sh
+kubectl -n ns run  -it --generator=run-pod/v1 --rm --restart=Never --image=imageurl mypodname -- sh
 
 kubectl -n ns run --rm -it --image=radial/busyboxplus:curl --restart=Never curl -- cmd
 kubectl -n ns run --rm --image=radial/busyboxplus:curl --restart=Never curl -- curl url
 kubectl -n ns run --rm -it --image=busybox --restart=Never mybusybox -- sh
+
+# https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl_run/
+# Start the nginx container using a different command and custom arguments.
+# This starts the container with another entrypoint. Like the --entrypoint of docker run. It's helpful when diagnostics. Without --command option looks the cmd forward would run after entrypoint
+kubectl run nginx --image=nginx --command -- <cmd> <arg1> ... <argN>
+
 kubectl -n ns exec  podcontainer -- mysqldump --all-databases --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
 kubectl -n ns exec  podcontainer -- mysqldump --databases db1 db2 db3 db4 --add-drop-database --add-drop-table --single-transaction -uroot -ppasswd > dump-file.sql
 nohup kubectl -n ns exec podcontainer -- mysql -uroot -ppasswd -e "source /tmp/dump-file.sql;" &
@@ -750,7 +756,14 @@ SELECT @@global.time_zone, @@session.time_zone;
 SELECT UNIX_TIMESTAMP(STR_TO_DATE('Apr 15 2012 12:00AM', '%M %d %Y %h:%i%p'))
 SELECT FROM_UNIXTIME(UNIX_TIMESTAMP(STR_TO_DATE('Apr 15 2012 12:00AM', '%M %d %Y %h:%i%p')),'%m-%d-%Y %h:%i:%p')
 
-
+--mysql
+-- Check details about a db/table
+SELECT create_time FROM INFORMATION_SCHEMA.TABLES
+  WHERE table_schema = 'your_schema'
+  AND table_name = 'your_table'
+-- -B/--raw options disable/enalbe the tabular format output. But looks k8s exec usage does not have any difference.
+mysql -uroot -ppass --raw -e "select table_name,create_time,update_time from INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='schema_name';"
+mysql -uroot -ppass -B -e "select table_name,create_time,update_time from INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='schema_name';"
 ```
 
 ## sqlplus
