@@ -169,6 +169,26 @@ rsync -av --progress sourcefolder /destinationfolder --exclude thefoldertoexclud
 rsync -av --progress sourcefolder /destinationfolder --exclude thefoldertoexclude --exclude anotherfoldertoexclude
 
 du -hs * | sort -hr
+
+# list subdirectory names in file
+# https://askubuntu.com/questions/994602/how-to-write-out-all-directory-names-into-a-text-file
+# Improving you current code, this command should be helpful:
+for d in ./*;do [[ -d "$d" ]] && echo "$d" >> dir.txt; done
+# To remove the ./ from the output:
+for d in ./*;do [[ -d "$d" ]] && echo "${d##./}" >> dir.txt; done
+for d in ./*;do [[ -d "$d" ]] && e="${d##./}" && zip -re -Ppasswd $e $e/ ; done
+# Show the items of the file
+for d in $(cat dir.txt); do echo $d; done
+for d in $(cat dir.txt); do zip -re $d $d/; done
+for d in $(cat dir.txt); do zip -re -Ppasswd $d $d/; done
+
+# https://stackoverflow.com/questions/2059794/what-is-the-meaning-of-the-0-syntax-with-variable-braces-and-hash-chara
+# See the section on Substring removal in the Advanced Bash-Scripting Guide‡:
+${string#substring}
+# Deletes shortest match of substring from front of $string.
+${string##substring}
+# Deletes longest match of substring from front of $string.
+# The substring may include a wildcard *, matching everything. The expression ${0##/*} prints the value of $0 unless it starts with a forward slash, in which case it prints nothing.
 ```
 ## ssh config
 
