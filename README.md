@@ -18,6 +18,9 @@ cp -t dest_dir file1 file2 file3
 
 for i in {1..150}; do echo "$i"; sleep 1; done
 for i in $(seq 1 10); do echo "aaa${i}aaa"; done
+for i in aaa bbb ccc; do echo $i; done
+for h in `cat containers.txt`; do echo $h; done
+
 while true; do printf .; sleep 5;done
 while [[ true ]]; do ls -atlrh; sleep 5; done
 mount -t glusterfs -o acl ip:/export_path /local_path/mnt
@@ -99,7 +102,7 @@ cmd1 || cmd2 || cmd3
 
 zip –r filename.zip directory_name
 unzip -x -d dir file.zip
-zip -re my_zip_folder.zip agatha.txt cpluplus.cpp test_dir # -e option to zip files with password
+zip -re my_zip_folder.zip agatha.txt cpluplus.cpp test_dir # -e option to zip files with password -Ppasswd
 
 #tar
 #compress
@@ -176,6 +179,8 @@ du -hs * | sort -hr
 for d in ./*;do [[ -d "$d" ]] && echo "$d" >> dir.txt; done
 # To remove the ./ from the output:
 for d in ./*;do [[ -d "$d" ]] && echo "${d##./}" >> dir.txt; done
+for d in ./*;do [[ -f "$d" ]] && echo "${d##./}"; done
+for d in ./*;do [[ -d "$d" ]] && echo "${d##./}"; done
 for d in ./*;do [[ -d "$d" ]] && e="${d##./}" && zip -re -Ppasswd $e $e/ ; done
 # Show the items of the file
 for d in $(cat dir.txt); do echo $d; done
