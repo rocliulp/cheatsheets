@@ -20,6 +20,8 @@ for i in {1..150}; do echo "$i"; sleep 1; done
 for i in $(seq 1 10); do echo "aaa${i}aaa"; done
 for i in aaa bbb ccc; do echo $i; done
 for h in `cat containers.txt`; do echo $h; done
+for d in ./*;do [[ -f "$d" ]] && echo "${d##./}"; done
+for d in ./*;do [[ -d "$d" ]] && e="${d##./}" && echo $e; done
 
 while true; do printf .; sleep 5;done
 while [[ true ]]; do ls -atlrh; sleep 5; done
