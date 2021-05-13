@@ -97,6 +97,8 @@ find . -name ".svn" -type d -exec rm -r "{}" \; # remove directory. ATTENTION: d
 find . -name ".svn" -type d -exec rm -r {} +    #                   ATTENTION: without double quote
 find . -name ".svn" -type d -empty -delete # remove only when directory is empty (-delete remove only empty as well. looks -empty does not make any difference here on directory)
 find . -name test -type d -print0|xargs -0 rm -r --
+find ./ -maxdepth 1 -mindepth 1 -type d -exec basename {} \; # This works but blow does not. So check both of them if necessary. The -maxdepth -mindepth options need to be ahead of -type d.
+find ./ -maxdepth 1 -mindepth 1 -type d -exec basename {} + # This does not work. So check both of them if necessary.
 
 uuidgen
 cmd1 && cmd2 && cmd3
